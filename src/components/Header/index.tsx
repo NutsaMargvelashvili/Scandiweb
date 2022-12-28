@@ -10,6 +10,8 @@ import {getCategories} from "../../GQL";
 interface IHeader{
   selectedCategory: any;
   callback: any;
+  currencyCallback: any;
+  selectedCurrency: string
 }
 
 class AppHeader extends React.Component <IHeader, { categories: any, currencyDrawer: boolean}>{
@@ -23,7 +25,9 @@ class AppHeader extends React.Component <IHeader, { categories: any, currencyDra
   handleCallback(selectedCategor: any) {
     this.props.callback(selectedCategor)
   }
-
+  handleCurrencyCallback(selectedCurrency: any) {
+    this.props.currencyCallback(selectedCurrency)
+  }
   componentDidMount() {
     const queryParams = new URLSearchParams(window.location.search);
     console.log(queryParams, "dnfkj")
@@ -68,9 +72,9 @@ class AppHeader extends React.Component <IHeader, { categories: any, currencyDra
               <img className={"arrow-icon"} alt={"arrow"} src={Arrow}/>
             {this.state.currencyDrawer && (<div className="currency-drawer">
               <ul className="currency-list-items">
-                <li  className={"list-item"}>usd</li>
-                <li  className={"list-item"}>usd</li>
-                <li  className={"list-item"}>usd</li>
+                <li onClick={()=>this.handleCurrencyCallback("USD")} className={`list-item ${this.props.selectedCurrency === "USD" ? "active" : ""}`}>$ USD</li>
+                <li onClick={()=>this.handleCurrencyCallback("RUB")} className={`list-item ${this.props.selectedCurrency === "RUB" ? "active" : ""}`}>₽ RUB</li>  {/*There was EUR given on Figma but the products don't have that currency so I,ve replaced EUR with RUB*/}
+                <li onClick={()=>this.handleCurrencyCallback("JPY")} className={`list-item ${this.props.selectedCurrency === "JPY" ? "active" : ""}`}>¥ JPY</li>
               </ul>
             </div>)}
           </div>

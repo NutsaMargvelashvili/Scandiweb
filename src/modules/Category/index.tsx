@@ -11,17 +11,27 @@ import {Link} from "react-router-dom";
 
 interface ICategory {
   selectedCategory: string;
+  selectedCurrency: string;
 }
-class Category extends React.Component<ICategory, {categoryName: string, products: any}> {
+class Category extends React.Component<ICategory, {categoryName: string, products: any, amount: number}> {
   constructor(props: any) {
     super(props);
 
     // Initializing the state
-    this.state = { categoryName: "Category Name", products: []  };
+    this.state = { categoryName: "Category Name", products: [], amount: 0  };
+    this.handleCurrency= this.handleCurrency.bind(this);
   }
 
-  componentDidMount() {
+  handleCurrency(product: any){
+    console.log("entered")
+    let curr;
+    if(product.prices){
+      curr = product.prices.find((price:any)=> {return price.currency.label === this.props.selectedCurrency});
+    }
 
+    return   (<p className={"product-price"}>{curr && (curr.currency.symbol + curr.amount)}</p>)
+  }
+  componentDidMount() {
     // console.log('Props:', this.props.match)
     // const { match } = this.props;
     // console.log(match.params.id)
@@ -36,7 +46,6 @@ class Category extends React.Component<ICategory, {categoryName: string, product
       getCategories().then((value) => {
         selectedCategoryProducts = value.find((category:any)=> {return category.name === this.props.selectedCategory});
         this.setState({products: selectedCategoryProducts})
-
       })
         .catch((e) => {
           console.error(e); // "oh, no!"
@@ -56,7 +65,10 @@ class Category extends React.Component<ICategory, {categoryName: string, product
                 <img src={product.gallery[0]} alt={product.name }/>
               </div>
               <p className={"product-name"}>{product.name}</p>
-              <p className={"product-price"}>{product.prices[0].currency.symbol + product.prices[0].amount}</p>
+              {this.handleCurrency(product)}
+              {/*<p*/}
+              {/*  // onClick={this.handleCurrency.bind(this, product)}*/}
+              {/*  className={"product-price"}>{product.prices[0].currency.symbol + this.handleCurrency.bind(this,product)}</p>*/}
             </div>
           ))) : ""}
         </div>
