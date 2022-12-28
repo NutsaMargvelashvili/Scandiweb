@@ -40,9 +40,32 @@
       padding-left: 134px;
       align-items: center;
       margin-right: 22px;
+      justify-content: center;
+      position: relative;
+      .currency-drawer{
+        position: absolute;
+        top: 30px;
+        width: 114px;
+        height: 169px;
+        border:1px solid black;
+        .currency-list-items{
+          list-style-type: none;
+          padding: 0;
+          .list-item{
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            &:nth-child(even){
+              background: #EEEEEE;
+            }
+          }
+        }
+      }
       .currency{
         font-family: Raleway, sans-serif;
         margin-right: 10px;
+        cursor: pointer;
       }
     }
     .cart{
