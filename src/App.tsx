@@ -50,6 +50,7 @@ class App extends React.Component<{}, {selectedCategory: string, selectedCurrenc
           selectedCurrency={this.state.selectedCurrency}
         />
         <Routes location={window.location} >
+
           <Route path='/clothes/:productId' element={<Product selectedCurrency={this.state.selectedCurrency} selectedProduct={this.state.selectedProduct}/>}/>
           <Route path='/tech/:projectId' element={<Product selectedCurrency={this.state.selectedCurrency} selectedProduct={this.state.selectedProduct}/>}/>
           <Route path='/all/:projectId' element={<Product selectedCurrency={this.state.selectedCurrency} selectedProduct={this.state.selectedProduct}/>}/>

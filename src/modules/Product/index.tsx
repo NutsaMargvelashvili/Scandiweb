@@ -5,10 +5,10 @@ interface IProduct {
   selectedProduct: any;
   selectedCurrency: string
 }
-class Product extends React.Component<IProduct, {selectedSize: string, selectedColor: string}> {
+class Product extends React.Component<IProduct, {selectedSize: string, selectedColor: string, selectedImage: number}> {
   constructor(props: any) {
     super(props);
-    this.state = { selectedSize: "S", selectedColor: "#D3D2D5"};
+    this.state = { selectedSize: "S", selectedColor: "#D3D2D5", selectedImage: 0};
     // Initializing the state
 
   }
@@ -27,7 +27,14 @@ class Product extends React.Component<IProduct, {selectedSize: string, selectedC
     return (
       <div className="product-wrapper">
         <div className="gallery">
-          <img className={"main-img"} alt={this.props.selectedProduct.name} src={this.props.selectedProduct.gallery[0]}/>
+          <div className="all-img">
+            {this.props.selectedProduct.gallery ? this.props.selectedProduct.gallery.map((image: any, index: any)=>
+              <img onClick={()=> {this.setState({selectedImage: index})}} className={"all-img"} alt={this.props.selectedProduct.name} key={index + this.props.selectedProduct.id} src={image}/>) : ""}
+            {/*<img className={"main-img"} alt={this.props.selectedProduct.name} src={this.props.selectedProduct.gallery[0]}/>*/}
+            {/*<img className={"main-img"} alt={this.props.selectedProduct.name} src={this.props.selectedProduct.gallery[0]}/>*/}
+            {/*<img className={"main-img"} alt={this.props.selectedProduct.name} src={this.props.selectedProduct.gallery[0]}/>*/}
+          </div>
+          <img className={"main-img"} alt={this.props.selectedProduct.name} src={this.props.selectedProduct.gallery[this.state.selectedImage]}/>
         </div>
         <div className="product-info">
           <p className={"brand"}>{this.props.selectedProduct.brand}</p>

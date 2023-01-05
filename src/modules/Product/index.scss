@@ -4,6 +4,18 @@
   display: flex;
   column-gap: 100px;
   .gallery{
+    display: flex;
+    column-gap: 40px;
+    .all-img{
+      display: flex;
+      flex-direction: column;
+      row-gap: 32px;
+      img{
+        height: 80px;
+        width: 79px;
+        object-fit: cover;
+      }
+    }
     .main-img{
       height: 511px;
       width: 610px;
