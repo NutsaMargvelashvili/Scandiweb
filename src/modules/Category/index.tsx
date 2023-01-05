@@ -1,6 +1,7 @@
 import "./index.scss";
 import React from "react";
 import {getCategories} from "../../GQL";
+
 import {Link} from "react-router-dom";
 
 // import { match } from 'react-router-dom';
@@ -12,6 +13,8 @@ import {Link} from "react-router-dom";
 interface ICategory {
   selectedCategory: string;
   selectedCurrency: string;
+  selectedProduct: [];
+  productCallback: any;
 }
 class Category extends React.Component<ICategory, {categoryName: string, products: any, amount: number}> {
   constructor(props: any) {
@@ -32,10 +35,19 @@ class Category extends React.Component<ICategory, {categoryName: string, product
     return   (<p className={"product-price"}>{curr && (curr.currency.symbol + curr.amount)}</p>)
   }
   componentDidMount() {
+
     // console.log('Props:', this.props.match)
     // const { match } = this.props;
     // console.log(match.params.id)
     // console.log(this.props.products, "prooood")
+    let selectedCategoryProducts;
+    getCategories().then((value) => {
+      selectedCategoryProducts = value.find((category:any)=> {return category.name === this.props.selectedCategory});
+      this.setState({products: selectedCategoryProducts})
+    })
+      .catch((e) => {
+        console.error(e); // "oh, no!"
+      })
   }
 
   componentDidUpdate(prevProps: any, prevState:any) {
@@ -52,14 +64,24 @@ class Category extends React.Component<ICategory, {categoryName: string, product
         })
     }
   }
-  render() {
+  handleProductCallback(selectedProduct: any) {
+    this.props.productCallback(selectedProduct)
+  }
+  handleProduct (product: any) {
+    // const { history } = this.props;
+    let currentLocation = window.location.pathname.split('/')[1];
+    window.history.pushState(null, "", `/${currentLocation}/${product.id}`)
+    // this.props.history.push(`/${currentLocation}/${product.id}`, {productId: product.id})
+    this.handleProductCallback(product)
 
+  }
+  render() {
     return (
       <div className="category-wrapper">
         <div className="category-name">{this.props.selectedCategory}</div>
         <div className="products-wrapper">
           {(this.state.products.products && this.state.products.products.length)  ? (this.state.products.products.map((product: any, index: any) => (
-            <div className={`product ${!product.inStock ? "out-of-stock" : ""}`} key={product.name + index}>
+            <div onClick={()=> { this.handleProduct(product) }} className={`product ${!product.inStock ? "out-of-stock" : ""}`} key={product.name + index}>
               <div className="product-image">
                 {!product.inStock && <span>out of stock</span>}
                 <img src={product.gallery[0]} alt={product.name }/>
