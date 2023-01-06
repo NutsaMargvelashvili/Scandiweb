@@ -71,6 +71,7 @@
     }
     .cart{
       position: relative;
+      cursor: pointer;
       .cart-product-amount{
         position: absolute;
         top: -12px;
@@ -87,6 +88,30 @@
         display: flex;
         align-items: center;
         justify-content: center;
+      }
+      .cart-drawer{
+        position: absolute;
+        z-index: 100;
+        background: #FFF;
+        padding: 32px 16px;
+        right: 0;
+        .view-cart-btn{
+          width: 292px;
+          height: 52px;
+          background: #5ECE7B;
+          border: none;
+          font-family: Raleway, sans-serif;
+          font-size: 14px;
+          font-weight: 600;
+          line-height: 17px;
+          letter-spacing: 0;
+          text-align: center;
+          .cart-link{
+            text-transform: uppercase;
+            color: #FFF;
+            text-decoration: none;
+          }
+        }
       }
     }
   }

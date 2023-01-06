@@ -1,5 +1,6 @@
-import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+import {ApolloClient, InMemoryCache, gql} from '@apollo/client';
 import React from "react";
+import category from "../modules/Category";
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/',
@@ -11,30 +12,83 @@ export const getCategories = async () => {
   const result = await client
     .query({
       query: gql`
-    query{
-    categories{
-      name,
-      products {
-        name,
-        id,
-        inStock,
-        gallery,
-        description,
-        category,
-        brand,
-        prices {
-          amount,
-          currency{
-              label,
-              symbol
-          }
+      query{
+      categories{
+          name
         }
-      }
-    }
-  }
-
-    `,
+      }`,
     })
 
   return result.data.categories
+}
+
+export const getProductByID = async (id: string) => {
+  const result = await client.query({
+    query: gql`
+      query {
+        product(id: "${id}") {
+          name
+          inStock
+          gallery
+          description
+          category
+          attributes {
+           name
+           type
+           items {
+              displayValue
+              value
+              id
+            }
+          }
+          prices {
+            currency {
+              symbol
+              label
+            }
+            amount
+          }
+          brand
+        }
+      }`
+  })
+  console.log(result)
+  return result.data.product
+}
+export const getProductsByCategory = async (category: string) => {
+  const result = await client.query({
+    query: gql`
+      query {
+      category(input: {title :"${category}"}) {
+        name
+        products {
+          name
+          inStock
+          gallery
+          prices { 
+          currency {
+            symbol
+            label
+          }
+          amount
+         }
+        }
+      }
+    }`
+  })
+  console.log(result)
+  return result.data.category
+}
+export const getCurrencies = async () => {
+  const result = await client.query({
+    query: gql`
+    query {
+      currencies {
+        symbol
+        label
+      }
+    }`
+  })
+  console.log(result)
+  return result.data.currencies
 }

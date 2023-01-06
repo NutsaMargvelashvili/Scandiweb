@@ -5,8 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3000b4e9-76c7-4532-8630-a7ef8385102b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/modules/Cart/index.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/modules/Cart/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/state/action-creators/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/state/action-types/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/state/actions/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/state/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/state/reducers/cartReducer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/state/reducers/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/state/store.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/modules/Product/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/Product/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GQL/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/GQL/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Header/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Header/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/Category/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/Category/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/Category/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/Category/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/modules/Product/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/Product/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -71,7 +88,9 @@
       <workItem from="1672852953482" duration="7943000" />
       <workItem from="1672909419559" duration="4544000" />
       <workItem from="1672914884899" duration="3182000" />
-      <workItem from="1672942996582" duration="9233000" />
+      <workItem from="1672942996582" duration="12821000" />
+      <workItem from="1672993791925" duration="11820000" />
+      <workItem from="1673015061132" duration="10259000" />
     </task>
     <servers />
   </component>

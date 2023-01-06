@@ -1,7 +1,6 @@
-import "./index.scss";
+﻿import "./index.scss";
 import React from "react";
-import {getCategories} from "../../GQL";
-
+import {getCategories, getProductsByCategory} from "../../GQL";
 import {Link} from "react-router-dom";
 
 // import { match } from 'react-router-dom';
@@ -15,11 +14,13 @@ interface ICategory {
   selectedCurrency: string;
   selectedProduct: [];
   productCallback: any;
+  cartDrawerOpen: boolean
 }
 class Category extends React.Component<ICategory, {categoryName: string, products: any, amount: number}> {
-  constructor(props: any) {
-    super(props);
-
+  public products = [];
+   constructor(props: any) {
+    super(props)
+    console.log(window.location.pathname.split('/')[1])
     // Initializing the state
     this.state = { categoryName: "Category Name", products: [], amount: 0  };
     this.handleCurrency= this.handleCurrency.bind(this);
@@ -34,9 +35,9 @@ class Category extends React.Component<ICategory, {categoryName: string, product
 
     return   (<p className={"product-price"}>{curr && (curr.currency.symbol + curr.amount)}</p>)
   }
-  componentDidMount() {
-
-    // console.log('Props:', this.props.match)
+  async componentDidMount() {
+    await this.getProducts()
+      // console.log('Props:', this.props.match)
     // const { match } = this.props;
     // console.log(match.params.id)
     // console.log(this.props.products, "prooood")
@@ -50,7 +51,9 @@ class Category extends React.Component<ICategory, {categoryName: string, product
       })
   }
 
-  componentDidUpdate(prevProps: any, prevState:any) {
+  async componentDidUpdate(prevProps: any, prevState:any) {
+    await this.getProducts()
+
     // Typical usage (don't forget to compare props):
     if (this.props.selectedCategory !== prevProps.selectedCategory) {
       // console.log(this.props.products, "prooood")
@@ -64,6 +67,11 @@ class Category extends React.Component<ICategory, {categoryName: string, product
         })
     }
   }
+  async getProducts() {
+    const {products} = await getProductsByCategory(window.location.pathname.split('/')[1])
+    this.products = products
+  }
+
   handleProductCallback(selectedProduct: any) {
     this.props.productCallback(selectedProduct)
   }
@@ -78,9 +86,10 @@ class Category extends React.Component<ICategory, {categoryName: string, product
   render() {
     return (
       <div className="category-wrapper">
+        {this.props.cartDrawerOpen &&  <div className="shade"></div>}
         <div className="category-name">{this.props.selectedCategory}</div>
         <div className="products-wrapper">
-          {(this.state.products.products && this.state.products.products.length)  ? (this.state.products.products.map((product: any, index: any) => (
+          {(this.products && this.products.length)  ? (this.products.map((product: any, index: any) => (
             <div onClick={()=> { this.handleProduct(product) }} className={`product ${!product.inStock ? "out-of-stock" : ""}`} key={product.name + index}>
               <div className="product-image">
                 {!product.inStock && <span>out of stock</span>}

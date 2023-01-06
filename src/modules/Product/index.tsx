@@ -1,9 +1,14 @@
 import "./index.scss";
 import React from "react";
+import {connect} from "react-redux";
+import {State} from "../../state";
+import {addCartProduct} from "../../state/action-creators";
 
 interface IProduct {
   selectedProduct: any;
-  selectedCurrency: string
+  selectedCurrency: string;
+  cartProducts: [];
+  addCartProduct: any;
 }
 class Product extends React.Component<IProduct, {selectedSize: string, selectedColor: string, selectedImage: number}> {
   constructor(props: any) {
@@ -22,7 +27,7 @@ class Product extends React.Component<IProduct, {selectedSize: string, selectedC
     return   (<p className={"price"}>{curr && (curr.currency.symbol + curr.amount)}</p>)
   }
   render() {
-    {console.log(this.props.selectedProduct, "producttt")}
+    {console.log(this.props.cartProducts, "producttt")}
 
     return (
       <div className="product-wrapper">
@@ -60,11 +65,20 @@ class Product extends React.Component<IProduct, {selectedSize: string, selectedC
           </div>
           <p className={"caption"}>price:</p>
           {this.handleCurrency()}
-          <button className={"add-cart-btn"}>Add to cart</button>
+          <button onClick={() => {addCartProduct(this.props.selectedProduct); console.log("onclick")}} className={"add-cart-btn"}>Add to cart</button>
+          {this.props.cartProducts}
           <p className={"description"}>{this.props.selectedProduct.description}</p>
         </div>
       </div>
     );
   }
 };
-export default Product;
+const mapStateToProps = (state: State) => {
+  return{
+    cartProducts: state.cart.cartProducts
+  }
+}
+const mapDispatchToProps = (dispatch:any, product: {}) =>({
+  addCartProduct
+})
+export default connect(mapStateToProps, mapDispatchToProps)(Product);
