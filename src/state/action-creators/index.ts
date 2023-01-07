@@ -11,3 +11,17 @@ export const addCartProduct = (product: {}) => {
     })
   }
 }
+
+
+// export const addCartProduct = (dispatch: any) => {
+//   return (product: {}) => {
+//     // this works because when the button is clicked,
+//     // I can successfully console log in here.
+//     console.log("cmnnn", product);
+//     dispatch({
+//       type: ActionTypes.ADD_CART_PRODUCT,
+//       payload: product
+//     }); // THIS DISPATCH IS NOT WORKING
+//     // API call here...
+//   }
+// };

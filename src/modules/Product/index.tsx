@@ -71,6 +71,7 @@ class Product extends React.Component<IProduct, {selectedSize: string, selectedC
   }
 
   render() {
+    console.log(this.props.cartProducts, "cartproductttt")
    let product = this.getProductHtml()
    let productSizes = this.getProductSizes()
    let productColors = this.getProductColors()
@@ -89,8 +90,8 @@ class Product extends React.Component<IProduct, {selectedSize: string, selectedC
             {productColors}
           <p className={"caption"}>price:</p>
           {this.handleCurrency()}
-          <button onClick={() => {addCartProduct(this.state.selectedProduct); console.log("onclick")}} className={"add-cart-btn"}>Add to cart</button>
-          {this.props.cartProducts}
+          <button onClick={() => {this.props.addCartProduct(this.state.selectedProduct); console.log("onclick")}} className={"add-cart-btn"}>Add to cart</button>
+          {/*{this.props.cartProducts}*/}
           <div className={"description"}  dangerouslySetInnerHTML={{__html: this.state.selectedProduct.description}}></div>
         </div>
       </div>
@@ -102,7 +103,20 @@ const mapStateToProps = (state: State) => {
     cartProducts: state.cart.cartProducts
   }
 }
-const mapDispatchToProps = (dispatch:any, product: {}) =>({
-  addCartProduct
-})
+// const mapDispatchToProps = (dispatch:any, product: {}) =>({
+//   addCartProduct
+// })
+//
+
+const mapDispatchToProps = (dispatch:any) => {
+  return {
+    addCartProduct: (product: {}) => {
+      dispatch(addCartProduct(product))
+      // addCartProduct(product)(dispatch);
+    }
+  }
+  // return {
+  //   addCartProduct: addCartProduct(product)(dispatch)
+  // }
+};
 export default connect(mapStateToProps, mapDispatchToProps)(Product);
