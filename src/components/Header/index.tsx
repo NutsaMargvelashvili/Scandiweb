@@ -7,6 +7,7 @@ import Logo from "../../assets/svg/Logo.svg"
 import {getCategories, getCurrencies} from "../../GQL";
 import {State} from "../../state";
 import {connect} from "react-redux";
+import {addCartProduct} from "../../state/action-creators";
 
 
 interface IHeader {
@@ -15,16 +16,18 @@ interface IHeader {
   currencyCallback: any;
   selectedCurrency: any;
   cartProducts: any;
+  addCartProduct: any;
+
   // setCartDrawerOpen: any;
   // cartDrawerOpen: any;
 }
 
-class AppHeader extends React.Component <IHeader, { selectedSize: string, selectedColor: string, categories: any, currencyDrawer: boolean, cartDrawer: boolean, currencies: any}> {
+class AppHeader extends React.Component <IHeader, { selectedSize: string, selectedColor: string, categories: any, currencyDrawer: boolean, cartDrawer: boolean, currencies: any, cartProductsCounts: number}> {
   constructor(props: any) {
     super(props);
 
     // Initializing the state
-    this.state = {selectedSize: "S", selectedColor: "#D3D2D5", categories: [], currencyDrawer: false, cartDrawer: false, currencies: []};
+    this.state = {selectedSize: "S", selectedColor: "#D3D2D5", categories: [], currencyDrawer: false, cartDrawer: false, currencies: [], cartProductsCounts: 0};
   }
 
   handleCallback(selectedCategor: any) {
@@ -52,7 +55,6 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
   getCurrencies(){
     getCurrencies().then((value) => {
       this.setState({currencies: value});
-      console.log(value,"currencies")
       // return Promise.reject("oh, no!");
     })
       .catch((e) => {
@@ -61,11 +63,19 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
   }
 
   componentDidUpdate(prevProps: any, prevState: { categories: number; }) {
-    if (this.state.categories > prevState.categories) {
-      console.log("wohooo", this.state.categories)
+    if(this.props.cartProducts !== prevProps.cartProducts){
+      this.countCartProducts()
     }
   }
-
+  countCartProducts(){
+    let counts: any = [];
+    this.props.cartProducts.forEach((product:any)=>{
+      if(!counts.includes(product)){
+        counts.push(product)
+      }
+    })
+    // console.log(counts.length, "count")
+  }
   getCategoriesHtml() {
     return this.state.categories && this.state.categories[0] ? (this.state.categories.map((category: any, index: any) => (
       <li  key={index + category.name}  className={`Nav__item ${this.props.selectedCategory === category.name ? "active" : ""}`}>
@@ -112,6 +122,7 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
   render() {
     let categories = this.getCategoriesHtml()
     let currencies = this.getCurrenciesHtml()
+    // console.log(this.props.cartProducts, "amounttt")
     return (
       <>
       <div className="app-header">
@@ -138,27 +149,27 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
           </div>
           <div className="cart" onClick={() => this.setState({cartDrawer: !this.state.cartDrawer, currencyDrawer: false})}>
             <img className={"cart-icon"} alt={"cart"} src={Cart}/>
-            <div className="cart-product-amount">3</div>
+            <div className="cart-product-amount">{this.props.cartProducts.length}</div>
             {this.state.cartDrawer && (<div className="cart-drawer">
               <div className={"bag-items-amount"}>
                 <span>My Bag, </span>
                 <span>3 items</span>
               </div>
               {this.props.cartProducts ? this.props.cartProducts.map((cartProduct: any, index: any)=>
-                <div key={index+cartProduct.id} className={"cart-product-wrapper"}>
+                <div key={index+cartProduct[0].id} className={"cart-product-wrapper"}>
                   <div className="cart-product-info">
-                    <p className={"brand"}>{cartProduct.brand}</p>
-                    <p className={"name"}>{cartProduct.name}</p>
-                    {this.handleCurrency(cartProduct)}
-                    {this.getProductSizes(cartProduct)}
-                    {this.getProductColors(cartProduct)}
+                    <p className={"brand"}>{cartProduct[0].brand}</p>
+                    <p className={"name"}>{cartProduct[0].name}</p>
+                    {this.handleCurrency(cartProduct[0])}
+                    {this.getProductSizes(cartProduct[0])}
+                    {this.getProductColors(cartProduct[0])}
                   </div>
                   <div className={"cart-product-actions"}>
                     <button>-</button>
-                    <span>3</span>
-                    <button>+</button>
+                    <span>{cartProduct.length}</span>
+                    <button onClick={() => {this.props.addCartProduct(cartProduct[0])}}>+</button>
                   </div>
-                  <img src={cartProduct.gallery[0]} alt={cartProduct.id} />
+                  <img src={cartProduct[0].gallery[0]} alt={cartProduct[0].id} />
                 </div>) : "" }
               <div className="cart-products-total-price">
                 <span className={"total-price-caption"}>Total</span>
@@ -184,4 +195,11 @@ const mapStateToProps = (state: State) => {
     cartProducts: state.cart.cartProducts
   }
 }
-export default connect(mapStateToProps)(AppHeader);
+const mapDispatchToProps = (dispatch:any) => {
+  return {
+    addCartProduct: (product: {}) => {
+      dispatch(addCartProduct(product))
+    }
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(AppHeader);

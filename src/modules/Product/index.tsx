@@ -26,7 +26,6 @@ class Product extends React.Component<IProduct, {selectedSize: string, selectedC
 
   getProduct() {
     getProductByID(window.location.pathname.split('/')[2]).then((value) => {
-      console.log(value, "prodddd")
       this.setState({selectedProduct: value})
     })
       .catch((e) => {
@@ -71,7 +70,7 @@ class Product extends React.Component<IProduct, {selectedSize: string, selectedC
   }
 
   render() {
-    console.log(this.props.cartProducts, "cartproductttt")
+    //console.log(this.props.cartProducts, "cartproductttt")
    let product = this.getProductHtml()
    let productSizes = this.getProductSizes()
    let productColors = this.getProductColors()
@@ -90,7 +89,7 @@ class Product extends React.Component<IProduct, {selectedSize: string, selectedC
             {productColors}
           <p className={"caption"}>price:</p>
           {this.handleCurrency()}
-          <button onClick={() => {this.props.addCartProduct(this.state.selectedProduct); console.log("onclick")}} className={"add-cart-btn"}>Add to cart</button>
+          <button onClick={() => {this.props.addCartProduct(this.state.selectedProduct)}} className={"add-cart-btn"}>Add to cart</button>
           {/*{this.props.cartProducts}*/}
           <div className={"description"}  dangerouslySetInnerHTML={{__html: this.state.selectedProduct.description}}></div>
         </div>

@@ -3,7 +3,6 @@ import { Dispatch} from "redux";
 import {Action} from "../actions";
 
 export const addCartProduct = (product: {}) => {
-  console.log("cmnnn", product);
   return (dispatch: Dispatch<Action>) =>{
     dispatch({
       type: ActionTypes.ADD_CART_PRODUCT,
@@ -11,6 +10,14 @@ export const addCartProduct = (product: {}) => {
     })
   }
 }
+
+// export const countProductsAmount = () => {
+//   return (dispatch: Dispatch<Action>) =>{
+//     dispatch({
+//       type: ActionTypes.PRODUCTS_AMOUNT,
+//     })
+//   }
+// }
 
 
 // export const addCartProduct = (dispatch: any) => {
