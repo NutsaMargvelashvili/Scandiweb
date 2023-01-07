@@ -12,16 +12,16 @@ interface IHeader {
   callback: any;
   currencyCallback: any;
   selectedCurrency: any;
-  setCartDrawerOpen: any;
-  cartDrawerOpen: any;
+  // setCartDrawerOpen: any;
+  // cartDrawerOpen: any;
 }
 
-class AppHeader extends React.Component <IHeader, { categories: any, currencyDrawer: boolean, currencies: any }> {
+class AppHeader extends React.Component <IHeader, { categories: any, currencyDrawer: boolean, cartDrawer: boolean, currencies: any }> {
   constructor(props: any) {
     super(props);
 
     // Initializing the state
-    this.state = {categories: [], currencyDrawer: false, currencies: []};
+    this.state = {categories: [], currencyDrawer: false, cartDrawer: false, currencies: []};
   }
 
   handleCallback(selectedCategor: any) {
@@ -83,6 +83,7 @@ class AppHeader extends React.Component <IHeader, { categories: any, currencyDra
     let categories = this.getCategoriesHtml()
     let currencies = this.getCurrenciesHtml()
     return (
+      <>
       <div className="app-header">
         <nav className="Nav">
           <ul className="Nav__item-wrapper">
@@ -91,12 +92,12 @@ class AppHeader extends React.Component <IHeader, { categories: any, currencyDra
         </nav>
         <div className="logo-wrapper">
           <Link to="/" className="brand">
-            <img src={Logo} className="logo"/>
+            <img src={Logo} alt={"logo"} className="logo"/>
           </Link>
         </div>
         <div className="actions">
-          <div  style={{zIndex: "4"}} className="currency-convertor"
-               onClick={() => this.setState({currencyDrawer: !this.state.currencyDrawer})}>
+          <div className="currency-convertor"
+               onClick={() => this.setState({currencyDrawer: !this.state.currencyDrawer, cartDrawer: false})}>
             <span className={"currency"}>{this.props.selectedCurrency?.symbol}</span>
             <img className={"arrow-icon"} alt={"arrow"} src={Arrow}/>
             {this.state.currencyDrawer && (<div className="currency-drawer">
@@ -105,21 +106,19 @@ class AppHeader extends React.Component <IHeader, { categories: any, currencyDra
               </ul>
             </div>)}
           </div>
-          <div className="cart" onClick={this.props.setCartDrawerOpen}>
+          <div className="cart" onClick={() => this.setState({cartDrawer: !this.state.cartDrawer, currencyDrawer: false})}>
             <img className={"cart-icon"} alt={"cart"} src={Cart}/>
             <div className="cart-product-amount">3</div>
-            {this.props.cartDrawerOpen && (
-              <>
-              <div  style={{background: "#234362",position : "fixed",top: "70px", left:"0",minWidth: "100vw", minHeight: "100vh", zIndex: "2"}}/>
-              <div className="cart-drawer" style={{zIndex: "4"}}>
-                cart drawer
-                <button className={"view-cart-btn"}><Link className="cart-link" to={"/cart"}>View bag</Link></button>
-              </div>
-              </>
-            )}
+            {this.state.cartDrawer && (<div className="cart-drawer">
+              cart drawer
+              <button className={"view-cart-btn"}><Link className="cart-link" to={"/cart"}>View bag</Link></button>
+            </div>)
+            }
           </div>
         </div>
       </div>
+    {this.state.cartDrawer && <div className="shade"></div>}
+    </>
     );
   }
 };

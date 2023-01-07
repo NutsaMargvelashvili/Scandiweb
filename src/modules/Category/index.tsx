@@ -15,7 +15,7 @@ interface ICategory {
   selectedCurrency: any;
   selectedProduct: [];
   productCallback: any;
-  cartDrawerOpen: boolean;
+  // cartDrawerOpen: boolean;
 }
 class Category extends React.Component<ICategory, {categoryName: string, products: any, amount: number, location: any, currentPath: any}> {
  // public products = [];
@@ -90,7 +90,6 @@ class Category extends React.Component<ICategory, {categoryName: string, product
      let products = this.getProductsHtml();
     return (
       <div className="category-wrapper">
-        {this.props.cartDrawerOpen &&  <div className="shade"></div>}
         <div className="category-name">{this.props.selectedCategory}</div>
         <div className="products-wrapper">
           {products}

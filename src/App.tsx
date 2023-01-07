@@ -11,13 +11,13 @@ import {connect} from "react-redux"
 interface IApp {
   // onAddCartProduct: any
 }
-class App extends React.Component<IApp, {selectedCategory: string, selectedCurrency: {}, selectedProduct: [], cartDrawerOpen: any}> {
+class App extends React.Component<IApp, {selectedCategory: string, selectedCurrency: {}, selectedProduct: []}> {
   public categories = {}
 
   constructor(props: any) {
     super(props);
     // Initializing the state
-    this.state = { selectedCategory: "", selectedCurrency: {label: "USD", symbol: "$"}, selectedProduct: [], cartDrawerOpen: false};
+    this.state = { selectedCategory: "", selectedCurrency: {label: "USD", symbol: "$"}, selectedProduct: []};
     this.callback = this.callback.bind(this);
     this.currencyCallback = this.currencyCallback.bind(this);
     this.productCallback = this.productCallback.bind(this);
@@ -59,11 +59,9 @@ class App extends React.Component<IApp, {selectedCategory: string, selectedCurre
           callback={this.callback}
           currencyCallback={this.currencyCallback}
           selectedCurrency={this.state.selectedCurrency}
-          setCartDrawerOpen={() => { this.setState({cartDrawerOpen: !this.state.cartDrawerOpen})}}
-          cartDrawerOpen={this.state.cartDrawerOpen}
         />
         <Routes location={window.location} >
-          <Route path="/:category" element={<Category cartDrawerOpen={this.state.cartDrawerOpen} productCallback={this.productCallback} selectedProduct={this.state.selectedProduct} selectedCurrency={this.state.selectedCurrency} selectedCategory={this.state.selectedCategory}/>}/>
+          <Route path="/:category" element={<Category productCallback={this.productCallback} selectedProduct={this.state.selectedProduct} selectedCurrency={this.state.selectedCurrency} selectedCategory={this.state.selectedCategory}/>}/>
           <Route path='/:all/:productId' element={<Product selectedCurrency={this.state.selectedCurrency} />}/>
         </Routes>
       </div>
