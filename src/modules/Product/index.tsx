@@ -39,10 +39,23 @@ class Product extends React.Component<IProduct, {selectedSize: string, selectedC
     if(this.state.selectedProduct.attributes){
       sizes = this.state.selectedProduct.attributes.find((attributeName:any)=> {return attributeName.name === "Size"});
     }
-  return sizes?.items ?  <><p className={"caption"}>Size:</p>
+  return sizes?.items ?  <><p className={"caption"}>{sizes?.name}:</p>
       <div className="size-wrapper">
         {sizes?.items?.map((size: any, index: any)=> {return <div key={index + size.id} onClick={() => {this.setState({selectedSize: size.value})}} className={`size ${this.state.selectedSize === size.value ? "active" : ""}`}>{size.value}</div>})}
       </div></> : ""
+  }
+
+  getProductColors(){
+    let colors;
+
+    if(this.state.selectedProduct.attributes){
+      colors = this.state.selectedProduct.attributes.find((attributeName:any)=> {return attributeName.name === "Color"});
+    }
+    return colors?.items ?  <><p className={"caption"}>{colors?.name}:</p>
+      <div className="color-wrapper">
+        {colors?.items?.map((color: any, index: any)=> {return    <div key={index + color.id} onClick={() => {this.setState({selectedColor: color.value})}} className={`border ${this.state.selectedColor === color.value ? "active" : ""}`}><div style={{background: color.value}} className={"color"} ></div></div>})}
+      </div>
+    </> : ""
   }
 
   handleCurrency(){
@@ -60,6 +73,7 @@ class Product extends React.Component<IProduct, {selectedSize: string, selectedC
   render() {
    let product = this.getProductHtml()
    let productSizes = this.getProductSizes()
+   let productColors = this.getProductColors()
     return (
       <div className="product-wrapper">
         <div className="gallery">
@@ -72,23 +86,12 @@ class Product extends React.Component<IProduct, {selectedSize: string, selectedC
           <p className={"brand"}>{this.state.selectedProduct.brand}</p>
           <p className={"name"}>{this.state.selectedProduct.name}</p>
             {productSizes}
-          <p className={"caption"}>color:</p>
-          <div className="color-wrapper">
-            <div onClick={() => {this.setState({selectedColor: "#D3D2D5"})}} className={`border ${this.state.selectedColor === "#D3D2D5" ? "active" : ""}`}>
-            <div style={{background: "#D3D2D5"}} className={"color"} ></div>
-            </div>
-            <div onClick={() => {this.setState({selectedColor: "#2B2B2B"})}} className={`border ${this.state.selectedColor === "#2B2B2B" ? "active" : ""}`}>
-              <div style={{background: "#2B2B2B"}} className={"color"} ></div>
-            </div>
-            <div onClick={() => {this.setState({selectedColor: "#0F6450"})}} className={`border ${this.state.selectedColor === "#0F6450" ? "active" : ""}`}>
-              <div style={{background: "#0F6450"}} className={"color"} ></div>
-            </div>
-          </div>
+            {productColors}
           <p className={"caption"}>price:</p>
           {this.handleCurrency()}
           <button onClick={() => {addCartProduct(this.state.selectedProduct); console.log("onclick")}} className={"add-cart-btn"}>Add to cart</button>
           {this.props.cartProducts}
-          <p className={"description"}>{this.state.selectedProduct.description}</p>
+          <div className={"description"}  dangerouslySetInnerHTML={{__html: this.state.selectedProduct.description}}></div>
         </div>
       </div>
     );
