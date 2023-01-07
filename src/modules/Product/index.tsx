@@ -3,47 +3,64 @@ import React from "react";
 import {connect} from "react-redux";
 import {State} from "../../state";
 import {addCartProduct} from "../../state/action-creators";
+import {getProductByID, getProductsByCategory} from "../../GQL";
 
 interface IProduct {
-  selectedProduct: any;
-  selectedCurrency: string;
+  // selectedProduct: any;
+  selectedCurrency: any;
   cartProducts: [];
   addCartProduct: any;
 }
-class Product extends React.Component<IProduct, {selectedSize: string, selectedColor: string, selectedImage: number}> {
+class Product extends React.Component<IProduct, {selectedSize: string, selectedColor: string, selectedImage: number, selectedProduct: any}> {
+  public product = [];
   constructor(props: any) {
     super(props);
-    this.state = { selectedSize: "S", selectedColor: "#D3D2D5", selectedImage: 0};
+    this.state = { selectedSize: "S", selectedColor: "#D3D2D5", selectedImage: 0, selectedProduct: []};
     // Initializing the state
 
   }
+
+  componentDidMount() {
+    this.getProduct()
+  }
+
+  getProduct() {
+    getProductByID(window.location.pathname.split('/')[2]).then((value) => {
+      console.log(value, "prodddd")
+      this.setState({selectedProduct: value})
+    })
+      .catch((e) => {
+        console.error(e); // "oh, no!"
+      })
+  }
+
   handleCurrency(){
     console.log("entered")
     let curr;
-    if(this.props.selectedProduct.prices){
-      curr = this.props.selectedProduct.prices.find((price:any)=> {return price.currency.label === this.props.selectedCurrency});
+    if(this.state.selectedProduct.prices){
+      curr = this.state.selectedProduct.prices.find((price:any)=> {return price.currency.label === this.props.selectedCurrency?.label});
     }
-
     return   (<p className={"price"}>{curr && (curr.currency.symbol + curr.amount)}</p>)
   }
-  render() {
-    {console.log(this.props.cartProducts, "producttt")}
+  getProductHtml(){
+    return  this.state.selectedProduct.gallery ? this.state.selectedProduct.gallery.map((image: any, index: any)=>
+        <img onClick={()=> {this.setState({selectedImage: index})}} className={"all-img"} alt={this.state.selectedProduct.name} key={index + this.state.selectedProduct.id} src={image}/>) : ""
+  }
 
+  render() {
+  //  {console.log(this.props.cartProducts, "producttt")}
+   let product = this.getProductHtml()
     return (
       <div className="product-wrapper">
         <div className="gallery">
           <div className="all-img">
-            {this.props.selectedProduct.gallery ? this.props.selectedProduct.gallery.map((image: any, index: any)=>
-              <img onClick={()=> {this.setState({selectedImage: index})}} className={"all-img"} alt={this.props.selectedProduct.name} key={index + this.props.selectedProduct.id} src={image}/>) : ""}
-            {/*<img className={"main-img"} alt={this.props.selectedProduct.name} src={this.props.selectedProduct.gallery[0]}/>*/}
-            {/*<img className={"main-img"} alt={this.props.selectedProduct.name} src={this.props.selectedProduct.gallery[0]}/>*/}
-            {/*<img className={"main-img"} alt={this.props.selectedProduct.name} src={this.props.selectedProduct.gallery[0]}/>*/}
+            {product}
           </div>
-          <img className={"main-img"} alt={this.props.selectedProduct.name} src={this.props.selectedProduct.gallery[this.state.selectedImage]}/>
+          <img className={"main-img"} alt={this.state.selectedProduct.name} src={this.state.selectedProduct?.gallery?.[this.state.selectedImage]}/>
         </div>
         <div className="product-info">
-          <p className={"brand"}>{this.props.selectedProduct.brand}</p>
-          <p className={"name"}>{this.props.selectedProduct.name}</p>
+          <p className={"brand"}>{this.state.selectedProduct.brand}</p>
+          <p className={"name"}>{this.state.selectedProduct.name}</p>
           <p className={"caption"}>Size:</p>
           <div className="size-wrapper">
              <div onClick={() => {this.setState({selectedSize: "XS"})}} className={`size ${this.state.selectedSize === "XS" ? "active" : ""}`}>XS</div>
@@ -65,9 +82,9 @@ class Product extends React.Component<IProduct, {selectedSize: string, selectedC
           </div>
           <p className={"caption"}>price:</p>
           {this.handleCurrency()}
-          <button onClick={() => {addCartProduct(this.props.selectedProduct); console.log("onclick")}} className={"add-cart-btn"}>Add to cart</button>
+          <button onClick={() => {addCartProduct(this.state.selectedProduct); console.log("onclick")}} className={"add-cart-btn"}>Add to cart</button>
           {this.props.cartProducts}
-          <p className={"description"}>{this.props.selectedProduct.description}</p>
+          <p className={"description"}>{this.state.selectedProduct.description}</p>
         </div>
       </div>
     );

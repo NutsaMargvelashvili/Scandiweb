@@ -11,13 +11,13 @@ import {connect} from "react-redux"
 interface IApp {
   // onAddCartProduct: any
 }
-class App extends React.Component<IApp, {selectedCategory: string, selectedCurrency: string, selectedProduct: [], cartDrawerOpen: any}> {
+class App extends React.Component<IApp, {selectedCategory: string, selectedCurrency: {}, selectedProduct: [], cartDrawerOpen: any}> {
   public categories = {}
 
   constructor(props: any) {
     super(props);
     // Initializing the state
-    this.state = { selectedCategory: "", selectedCurrency: "USD", selectedProduct: [], cartDrawerOpen: false};
+    this.state = { selectedCategory: "", selectedCurrency: {label: "USD", symbol: "$"}, selectedProduct: [], cartDrawerOpen: false};
     this.callback = this.callback.bind(this);
     this.currencyCallback = this.currencyCallback.bind(this);
     this.productCallback = this.productCallback.bind(this);
@@ -29,11 +29,10 @@ class App extends React.Component<IApp, {selectedCategory: string, selectedCurre
   // }
   callback(payload: any){
     this.setState({selectedCategory: payload})
-
   }
   currencyCallback(payload: any){
     console.log(payload, "payload")
-    this.setState({selectedCurrency: payload})
+    this.setState({selectedCurrency: {label: payload.label, symbol: payload.symbol}})
 
   }
 
@@ -51,7 +50,7 @@ class App extends React.Component<IApp, {selectedCategory: string, selectedCurre
 
   render() {
     // const { history } = this.props;
-    console.log(window.location, "window locationn")
+    console.log(this.state.selectedCurrency, "selected currency")
     return (
       <div className="App">
         {/*<button onClick={this.props.onAddCartProduct}>smth</button>*/}
@@ -65,7 +64,7 @@ class App extends React.Component<IApp, {selectedCategory: string, selectedCurre
         />
         <Routes location={window.location} >
           <Route path="/:category" element={<Category cartDrawerOpen={this.state.cartDrawerOpen} productCallback={this.productCallback} selectedProduct={this.state.selectedProduct} selectedCurrency={this.state.selectedCurrency} selectedCategory={this.state.selectedCategory}/>}/>
-          <Route path='/:all/:productId' element={<Product selectedCurrency={this.state.selectedCurrency} selectedProduct={this.state.selectedProduct}/>}/>
+          <Route path='/:all/:productId' element={<Product selectedCurrency={this.state.selectedCurrency} />}/>
         </Routes>
       </div>
     );

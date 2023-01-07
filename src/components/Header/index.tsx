@@ -4,24 +4,24 @@ import {Link} from "react-router-dom";
 import Arrow from "../../assets/svg/ArrowDown.svg"
 import Cart from "../../assets/svg/CartEmpty.svg"
 import Logo from "../../assets/svg/Logo.svg"
-import {getCategories} from "../../GQL";
+import {getCategories, getCurrencies} from "../../GQL";
 
 
 interface IHeader {
   selectedCategory: any;
   callback: any;
   currencyCallback: any;
-  selectedCurrency: string;
+  selectedCurrency: any;
   setCartDrawerOpen: any;
   cartDrawerOpen: any;
 }
 
-class AppHeader extends React.Component <IHeader, { categories: any, currencyDrawer: boolean }> {
+class AppHeader extends React.Component <IHeader, { categories: any, currencyDrawer: boolean, currencies: any }> {
   constructor(props: any) {
     super(props);
 
     // Initializing the state
-    this.state = {categories: [], currencyDrawer: false};
+    this.state = {categories: [], currencyDrawer: false, currencies: []};
   }
 
   handleCallback(selectedCategor: any) {
@@ -33,10 +33,23 @@ class AppHeader extends React.Component <IHeader, { categories: any, currencyDra
   }
 
   componentDidMount() {
-    const queryParams = new URLSearchParams(window.location.search);
-    console.log(queryParams, "dnfkj")
+    this.getCategories()
+    this.getCurrencies()
+  }
+
+  getCategories(){
     getCategories().then((value) => {
       this.setState({categories: value});
+      // return Promise.reject("oh, no!");
+    })
+      .catch((e) => {
+        console.error(e); // "oh, no!"
+      })
+  }
+  getCurrencies(){
+    getCurrencies().then((value) => {
+      this.setState({currencies: value});
+      console.log(value,"currencies")
       // return Promise.reject("oh, no!");
     })
       .catch((e) => {
@@ -60,14 +73,20 @@ class AppHeader extends React.Component <IHeader, { categories: any, currencyDra
     ))) : ""
   }
 
-  render() {
-    let catagoriesMenu = this.getCategoriesHtml()
+  getCurrenciesHtml(){
+    return this.state.currencies ? this.state.currencies.map((currency: any, index: any)=>
+        <li key={index + currency.label} onClick={() => this.handleCurrencyCallback(currency)}
+            className={`list-item ${this.props.selectedCurrency === currency.label ? "active" : ""}`}>{`${currency.symbol} ${currency.label}`}</li>) : ""
+  }
 
+  render() {
+    let categories = this.getCategoriesHtml()
+    let currencies = this.getCurrenciesHtml()
     return (
       <div className="app-header">
         <nav className="Nav">
           <ul className="Nav__item-wrapper">
-            {catagoriesMenu}
+            {categories}
           </ul>
         </nav>
         <div className="logo-wrapper">
@@ -78,20 +97,11 @@ class AppHeader extends React.Component <IHeader, { categories: any, currencyDra
         <div className="actions">
           <div  style={{zIndex: "4"}} className="currency-convertor"
                onClick={() => this.setState({currencyDrawer: !this.state.currencyDrawer})}>
-            <span className={"currency"}>$</span>
+            <span className={"currency"}>{this.props.selectedCurrency?.symbol}</span>
             <img className={"arrow-icon"} alt={"arrow"} src={Arrow}/>
             {this.state.currencyDrawer && (<div className="currency-drawer">
               <ul className="currency-list-items">
-                <li onClick={() => this.handleCurrencyCallback("USD")}
-                    className={`list-item ${this.props.selectedCurrency === "USD" ? "active" : ""}`}>$ USD
-                </li>
-                <li onClick={() => this.handleCurrencyCallback("RUB")}
-                    className={`list-item ${this.props.selectedCurrency === "RUB" ? "active" : ""}`}>₽ RUB
-                </li>
-                {/*There was EUR given on Figma but the products don't have that currency so I,ve replaced EUR with RUB*/}
-                <li onClick={() => this.handleCurrencyCallback("JPY")}
-                    className={`list-item ${this.props.selectedCurrency === "JPY" ? "active" : ""}`}>¥ JPY
-                </li>
+                {currencies}
               </ul>
             </div>)}
           </div>
