@@ -45,12 +45,14 @@
       position: relative;
       .currency-drawer{
         position: absolute;
+        z-index: 4;
         top: 30px;
         width: 114px;
         box-shadow: 0 4px 35px rgba(168, 172, 176, 0.19);
         .currency-list-items{
           list-style-type: none;
           padding: 0;
+          cursor: pointer;
           .list-item{
             height: 45px;
             display: flex;
@@ -71,7 +73,7 @@
     }
     .cart{
       position: relative;
-      cursor: pointer;
+      //cursor: pointer;
       .cart-product-amount{
         position: absolute;
         top: -12px;
@@ -91,7 +93,7 @@
       }
       .cart-drawer{
         position: absolute;
-        z-index: 100;
+        z-index: 4;
         background: #FFF;
         padding: 32px 16px;
         right: 0;

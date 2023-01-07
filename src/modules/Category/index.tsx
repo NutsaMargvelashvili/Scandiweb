@@ -73,7 +73,7 @@ class Category extends React.Component<ICategory, {categoryName: string, product
 
   getProductsHtml() {
     return  (this.state.products && this.state.products.length)  ? (this.state.products.map((product: any, index: any) => (
-  <div onClick={()=> { this.handleProduct(product) }} className={`product ${!product.inStock ? "out-of-stock" : ""}`} key={product.name + index}>
+  <div onClick={()=> { this.handleProduct(product) }} className={`product ${!product.inStock ? "out-of-stock" : ""}`} key={index + product.name}>
     <div className="product-image">
       {!product.inStock && <span>out of stock</span>}
       <img src={product.gallery[0]} alt={product.name }/>

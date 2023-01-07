@@ -65,9 +65,7 @@ class AppHeader extends React.Component <IHeader, { categories: any, currencyDra
 
   getCategoriesHtml() {
     return this.state.categories && this.state.categories[0] ? (this.state.categories.map((category: any, index: any) => (
-      <li onClick={() => this.handleCallback(category.name)}
-          className={`Nav__item ${this.props.selectedCategory === category.name ? "active" : ""}`}
-          key={category.name + index}>
+      <li  key={index + category.name} onClick={() => this.handleCallback(category.name)} className={`Nav__item ${this.props.selectedCategory === category.name ? "active" : ""}`}>
         <Link className="Nav__link" to={category.name}>{category.name}</Link>
       </li>
     ))) : ""
