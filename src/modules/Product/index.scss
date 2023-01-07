@@ -10,10 +10,31 @@
       display: flex;
       flex-direction: column;
       row-gap: 32px;
+      height: 511px;
+      overflow-x: auto;
       img{
+        min-height: 80px;
         height: 80px;
         width: 79px;
         object-fit: cover;
+      }
+      &::-webkit-scrollbar {
+        width: 2px;
+        height: 2px;
+      }
+      &::-webkit-scrollbar-track {
+        border-radius: 10px;
+        background: rgba(0,0,0,0.1);
+      }
+      &::-webkit-scrollbar-thumb{
+        border-radius: 10px;
+        background: rgba(0,0,0,0.2);
+      }
+      &::-webkit-scrollbar-thumb:hover{
+        background: rgba(0,0,0,0.4);
+      }
+      &::-webkit-scrollbar-thumb:active{
+        background: rgba(0,0,0,.9);
       }
     }
     .main-img{
