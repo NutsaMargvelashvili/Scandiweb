@@ -10,7 +10,7 @@ export const addCartProduct = (product: {}) => {
     })
   }
 }
-export const RemoveCartProduct = (product: {}) => {
+export const removeCartProduct = (product: {}) => {
   return (dispatch: Dispatch<Action>) =>{
     dispatch({
       type: ActionTypes.REMOVE_CART_PRODUCT,

@@ -48,7 +48,26 @@ const reducer = (state: any = initialState, action: Action) =>{
       }
 
     case ActionTypes.REMOVE_CART_PRODUCT:
-      return state
+    console.log("deleting...")
+      if(state.cartProducts[action.payload.id].count > 1){
+        let newCartProducts: any = {};
+        newCartProducts = state.cartProducts;
+        newCartProducts[action.payload.id].count = --newCartProducts[action.payload.id].count
+        return{
+          ...state,
+          cartProducts:  {...newCartProducts},
+        }
+      }
+      else{
+        let newCartProducts: any = {};
+        newCartProducts = Object.fromEntries(Object.entries(state.cartProducts).filter(([key]) => key !== action.payload.id));
+        return{
+          ...state,
+          cartProducts:  {...newCartProducts},
+        }
+      }
+
+
     // case ActionTypes.PRODUCTS_AMOUNT:
     //   let counts: any = [];
     //   state.cartProducts.forEach((x:any)=>{

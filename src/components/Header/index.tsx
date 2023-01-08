@@ -7,7 +7,7 @@ import Logo from "../../assets/svg/Logo.svg"
 import {getCategories, getCurrencies} from "../../GQL";
 import {State} from "../../state";
 import {connect} from "react-redux";
-import {addCartProduct} from "../../state/action-creators";
+import {addCartProduct, removeCartProduct} from "../../state/action-creators";
 
 
 interface IHeader {
@@ -17,7 +17,7 @@ interface IHeader {
   selectedCurrency: any;
   cartProducts: any;
   addCartProduct: any;
-
+  removeCartProduct: any;
   // setCartDrawerOpen: any;
   // cartDrawerOpen: any;
 }
@@ -161,7 +161,7 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
                     {this.getProductColors(cartProduct.product)}
                   </div>
                   <div className={"cart-product-actions"}>
-                    <button>-</button>
+                    <button onClick={() => {this.props.removeCartProduct(cartProduct.product)}}>-</button>
                     <span>{cartProduct.count}</span>
                     <button onClick={() => {this.props.addCartProduct(cartProduct.product)}}>+</button>
                   </div>
@@ -196,6 +196,9 @@ const mapDispatchToProps = (dispatch:any) => {
   return {
     addCartProduct: (product: {}) => {
       dispatch(addCartProduct(product))
+    },
+    removeCartProduct: (product: {}) => {
+      dispatch(removeCartProduct(product))
     }
   }
 }
