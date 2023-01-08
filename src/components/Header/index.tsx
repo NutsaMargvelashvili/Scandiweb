@@ -71,11 +71,14 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
       this.countCartProducts()
       this.countCartProductsPrice()
     }
+    if(this.props.selectedCurrency !== prevProps.selectedCurrency){
+      this.countCartProductsPrice()
+    }
   }
   countCartProductsPrice(){
     let totalPrice = 0;
-    this.props.cartProducts && Object.values(this.props.cartProducts).forEach((cartProduct: any)=> totalPrice = cartProduct.product.prices.find((price:any)=> {return price.currency.label === this.props.selectedCurrency?.label}).amount * cartProduct.count)
-    this.setState({productsTotalPrice: {symbol: this.props.selectedCurrency?.symbol, amount: totalPrice}})
+    this.props.cartProducts && Object.values(this.props.cartProducts).forEach((cartProduct: any)=> totalPrice = totalPrice + cartProduct.product.prices.find((price:any)=> {return price.currency.label === this.props.selectedCurrency?.label}).amount * cartProduct.count)
+    this.setState({productsTotalPrice: {symbol: this.props.selectedCurrency?.symbol, amount: parseFloat(totalPrice.toFixed(2))}})
   }
   countCartProducts(){
     let count = 0;
