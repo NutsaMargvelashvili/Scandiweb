@@ -8,6 +8,7 @@ import {getCategories, getCurrencies} from "../../GQL";
 import {State} from "../../state";
 import {connect} from "react-redux";
 import {addCartProduct, removeCartProduct} from "../../state/action-creators";
+import CartProducts from "../CartProducts";
 
 
 interface IHeader {
@@ -164,23 +165,10 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
                 <span>My Bag, </span>
                 <span>{this.state.productsCount} {this.state.productsCount > 1 ? "items" : "item"}</span>
               </div>
-              {this.props.cartProducts ? Object.values(this.props.cartProducts).map((cartProduct: any, index: any)=>{
-               return ( <div key={index+cartProduct.id} className={"cart-product-wrapper"}>
-                  <div className="cart-product-info">
-                    <p className={"brand"}>{cartProduct.product.brand}</p>
-                    <p className={"name"}>{cartProduct.product.name}</p>
-                    {this.handleCurrency(cartProduct.product)}
-                    {this.getProductSizes(cartProduct.product)}
-                    {this.getProductColors(cartProduct.product)}
-                  </div>
-                  <div className={"cart-product-actions"}>
-                    <button onClick={() => {this.props.removeCartProduct(cartProduct.product)}}>-</button>
-                    <span>{cartProduct.count}</span>
-                    <button onClick={() => {this.props.addCartProduct(cartProduct.product)}}>+</button>
-                  </div>
-                  <img src={cartProduct.product.gallery[0]} alt={cartProduct.product.id} />
-                </div>)}
-              ) : "" }
+              <CartProducts selectedCategory={this.props.selectedCategory}
+                             callback={this.props.callback}
+                             currencyCallback={this.props.currencyCallback}
+                             selectedCurrency={this.props.selectedCurrency} />
               <div className="cart-products-total-price">
                 <span className={"total-price-caption"}>Total</span>
                 <span className={"total-price"}>{this.state.productsTotalPrice.symbol} {this.state.productsTotalPrice.amount}</span>

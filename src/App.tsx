@@ -61,7 +61,7 @@ class App extends React.Component<IApp, {selectedCategory: string, selectedCurre
           selectedCurrency={this.state.selectedCurrency}
         />
         <Routes location={window.location} >
-          <Route path="/cart" element={<Cart />}/>
+          <Route path="/cart" element={<Cart selectedCategory={this.state.selectedCategory} callback={this.callback} currencyCallback={this.currencyCallback} selectedCurrency={this.state.selectedCurrency} />}/>
           <Route path="/:category" element={<Category productCallback={this.productCallback} selectedProduct={this.state.selectedProduct} selectedCurrency={this.state.selectedCurrency} selectedCategory={this.state.selectedCategory}/>}/>
           <Route path='/:all/:productId' element={<Product selectedCurrency={this.state.selectedCurrency} />}/>
         </Routes>
