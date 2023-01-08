@@ -22,12 +22,12 @@ interface IHeader {
   // cartDrawerOpen: any;
 }
 
-class AppHeader extends React.Component <IHeader, { selectedSize: string, selectedColor: string, categories: any, currencyDrawer: boolean, cartDrawer: boolean, currencies: any, cartProductsCounts: number, productsCount: number}> {
+class AppHeader extends React.Component <IHeader, { selectedSize: string, selectedColor: string, categories: any, currencyDrawer: boolean, cartDrawer: boolean, currencies: any, cartProductsCounts: number, productsCount: number, productsTotalPrice: any}> {
   constructor(props: any) {
     super(props);
 
     // Initializing the state
-    this.state = {selectedSize: "S", selectedColor: "#D3D2D5", categories: [], currencyDrawer: false, cartDrawer: false, currencies: [], cartProductsCounts: 0, productsCount: 0};
+    this.state = {selectedSize: "S", selectedColor: "#D3D2D5", categories: [], currencyDrawer: false, cartDrawer: false, currencies: [], cartProductsCounts: 0, productsCount: 0, productsTotalPrice: {price: 0, symbol: this.props.selectedCurrency.symbol}};
   }
 
   handleCallback(selectedCategor: any) {
@@ -41,6 +41,10 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
   componentDidMount() {
     this.getCategories()
     this.getCurrencies()
+    if (this.props.cartProducts){
+      this.countCartProducts()
+      this.countCartProductsPrice()
+    }
   }
 
   getCategories(){
@@ -65,7 +69,13 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
   componentDidUpdate(prevProps: any, prevState: { categories: number; }) {
     if(this.props.cartProducts !== prevProps.cartProducts){
       this.countCartProducts()
+      this.countCartProductsPrice()
     }
+  }
+  countCartProductsPrice(){
+    let totalPrice = 0;
+    this.props.cartProducts && Object.values(this.props.cartProducts).forEach((cartProduct: any)=> totalPrice = cartProduct.product.prices.find((price:any)=> {return price.currency.label === this.props.selectedCurrency?.label}).amount * cartProduct.count)
+    this.setState({productsTotalPrice: {symbol: this.props.selectedCurrency?.symbol, amount: totalPrice}})
   }
   countCartProducts(){
     let count = 0;
@@ -170,7 +180,7 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
               ) : "" }
               <div className="cart-products-total-price">
                 <span className={"total-price-caption"}>Total</span>
-                <span className={"total-price"}>$1000</span>
+                <span className={"total-price"}>{this.state.productsTotalPrice.symbol} {this.state.productsTotalPrice.amount}</span>
               </div>
               <div className="cart-btns">
                 <button className={"view-cart-btn"}><Link className="cart-link" to={"/cart"}>View bag</Link></button>
