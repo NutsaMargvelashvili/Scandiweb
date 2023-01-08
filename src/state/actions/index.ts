@@ -7,5 +7,9 @@ interface AddCartProductAction {
 // interface CountProductsAmountAction {
 //   type: ActionTypes.PRODUCTS_AMOUNT,
 // }
+interface RemoveCartProductAction {
+  type: ActionTypes.REMOVE_CART_PRODUCT,
+  payload: any
+}
 
-export type Action = AddCartProductAction;
+export type Action = AddCartProductAction | RemoveCartProductAction;

@@ -10,6 +10,15 @@ export const addCartProduct = (product: {}) => {
     })
   }
 }
+export const RemoveCartProduct = (product: {}) => {
+  return (dispatch: Dispatch<Action>) =>{
+    dispatch({
+      type: ActionTypes.REMOVE_CART_PRODUCT,
+      payload: product
+    })
+  }
+}
+
 
 // export const countProductsAmount = () => {
 //   return (dispatch: Dispatch<Action>) =>{

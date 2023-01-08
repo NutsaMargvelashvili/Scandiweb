@@ -22,12 +22,12 @@ interface IHeader {
   // cartDrawerOpen: any;
 }
 
-class AppHeader extends React.Component <IHeader, { selectedSize: string, selectedColor: string, categories: any, currencyDrawer: boolean, cartDrawer: boolean, currencies: any, cartProductsCounts: number}> {
+class AppHeader extends React.Component <IHeader, { selectedSize: string, selectedColor: string, categories: any, currencyDrawer: boolean, cartDrawer: boolean, currencies: any, cartProductsCounts: number, productsCount: number}> {
   constructor(props: any) {
     super(props);
 
     // Initializing the state
-    this.state = {selectedSize: "S", selectedColor: "#D3D2D5", categories: [], currencyDrawer: false, cartDrawer: false, currencies: [], cartProductsCounts: 0};
+    this.state = {selectedSize: "S", selectedColor: "#D3D2D5", categories: [], currencyDrawer: false, cartDrawer: false, currencies: [], cartProductsCounts: 0, productsCount: 0};
   }
 
   handleCallback(selectedCategor: any) {
@@ -68,13 +68,9 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
     }
   }
   countCartProducts(){
-    let counts: any = [];
-    this.props.cartProducts.forEach((product:any)=>{
-      if(!counts.includes(product)){
-        counts.push(product)
-      }
-    })
-    // console.log(counts.length, "count")
+    let count = 0;
+    this.props.cartProducts && Object.values(this.props.cartProducts).forEach((cartProduct: any)=> count = count + cartProduct.count)
+    this.setState({productsCount: count})
   }
   getCategoriesHtml() {
     return this.state.categories && this.state.categories[0] ? (this.state.categories.map((category: any, index: any) => (
@@ -122,7 +118,7 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
   render() {
     let categories = this.getCategoriesHtml()
     let currencies = this.getCurrenciesHtml()
-    // console.log(this.props.cartProducts, "amounttt")
+    console.log(this.props.cartProducts, "amounttt")
     return (
       <>
       <div className="app-header">
@@ -149,28 +145,29 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
           </div>
           <div className="cart" onClick={() => this.setState({cartDrawer: !this.state.cartDrawer, currencyDrawer: false})}>
             <img className={"cart-icon"} alt={"cart"} src={Cart}/>
-            <div className="cart-product-amount">{this.props.cartProducts.length}</div>
+            <div className="cart-product-amount">{this.state.productsCount}</div>
             {this.state.cartDrawer && (<div className="cart-drawer">
               <div className={"bag-items-amount"}>
                 <span>My Bag, </span>
-                <span>3 items</span>
+                <span>{this.state.productsCount} {this.state.productsCount > 1 ? "items" : "item"}</span>
               </div>
-              {this.props.cartProducts ? this.props.cartProducts.map((cartProduct: any, index: any)=>
-                <div key={index+cartProduct[0].id} className={"cart-product-wrapper"}>
+              {this.props.cartProducts ? Object.values(this.props.cartProducts).map((cartProduct: any, index: any)=>{
+               return ( <div key={index+cartProduct.id} className={"cart-product-wrapper"}>
                   <div className="cart-product-info">
-                    <p className={"brand"}>{cartProduct[0].brand}</p>
-                    <p className={"name"}>{cartProduct[0].name}</p>
-                    {this.handleCurrency(cartProduct[0])}
-                    {this.getProductSizes(cartProduct[0])}
-                    {this.getProductColors(cartProduct[0])}
+                    <p className={"brand"}>{cartProduct.product.brand}</p>
+                    <p className={"name"}>{cartProduct.product.name}</p>
+                    {this.handleCurrency(cartProduct.product)}
+                    {this.getProductSizes(cartProduct.product)}
+                    {this.getProductColors(cartProduct.product)}
                   </div>
                   <div className={"cart-product-actions"}>
                     <button>-</button>
-                    <span>{cartProduct.length}</span>
-                    <button onClick={() => {this.props.addCartProduct(cartProduct[0])}}>+</button>
+                    <span>{cartProduct.count}</span>
+                    <button onClick={() => {this.props.addCartProduct(cartProduct.product)}}>+</button>
                   </div>
-                  <img src={cartProduct[0].gallery[0]} alt={cartProduct[0].id} />
-                </div>) : "" }
+                  <img src={cartProduct.product.gallery[0]} alt={cartProduct.product.id} />
+                </div>)}
+              ) : "" }
               <div className="cart-products-total-price">
                 <span className={"total-price-caption"}>Total</span>
                 <span className={"total-price"}>$1000</span>

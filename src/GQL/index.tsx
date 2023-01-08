@@ -28,6 +28,7 @@ export const getProductByID = async (id: string) => {
       query {
         product(id: "${id}") {
           name
+          id
           inStock
           gallery
           description
