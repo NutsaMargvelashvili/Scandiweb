@@ -17,18 +17,20 @@ interface IHeader {
   currencyCallback: any;
   selectedCurrency: any;
   cartProducts: any;
+  price: any;
+  count: any;
   addCartProduct: any;
   removeCartProduct: any;
   // setCartDrawerOpen: any;
   // cartDrawerOpen: any;
 }
 
-class AppHeader extends React.Component <IHeader, { selectedSize: string, selectedColor: string, categories: any, currencyDrawer: boolean, cartDrawer: boolean, currencies: any, cartProductsCounts: number, productsCount: number, productsTotalPrice: any}> {
+class AppHeader extends React.Component <IHeader, { selectedSize: string, selectedColor: string, categories: any, currencyDrawer: boolean, cartDrawer: boolean, currencies: any, cartProductsCounts: number, productsCount: number}> {
   constructor(props: any) {
     super(props);
 
     // Initializing the state
-    this.state = {selectedSize: "S", selectedColor: "#D3D2D5", categories: [], currencyDrawer: false, cartDrawer: false, currencies: [], cartProductsCounts: 0, productsCount: 0, productsTotalPrice: {price: 0, symbol: this.props.selectedCurrency.symbol}};
+    this.state = {selectedSize: "S", selectedColor: "#D3D2D5", categories: [], currencyDrawer: false, cartDrawer: false, currencies: [], cartProductsCounts: 0, productsCount: 0};
   }
 
   handleCallback(selectedCategor: any) {
@@ -44,7 +46,6 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
     this.getCurrencies()
     if (this.props.cartProducts){
       this.countCartProducts()
-      this.countCartProductsPrice()
     }
   }
 
@@ -70,16 +71,9 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
   componentDidUpdate(prevProps: any, prevState: { categories: number; }) {
     if(this.props.cartProducts !== prevProps.cartProducts){
       this.countCartProducts()
-      this.countCartProductsPrice()
     }
     if(this.props.selectedCurrency !== prevProps.selectedCurrency){
-      this.countCartProductsPrice()
     }
-  }
-  countCartProductsPrice(){
-    let totalPrice = 0;
-    this.props.cartProducts && Object.values(this.props.cartProducts).forEach((cartProduct: any)=> totalPrice = totalPrice + cartProduct.product.prices.find((price:any)=> {return price.currency.label === this.props.selectedCurrency?.label}).amount * cartProduct.count)
-    this.setState({productsTotalPrice: {symbol: this.props.selectedCurrency?.symbol, amount: parseFloat(totalPrice.toFixed(2))}})
   }
   countCartProducts(){
     let count = 0;
@@ -99,40 +93,10 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
         <li key={index + currency.label} onClick={() => this.handleCurrencyCallback(currency)}
             className={`list-item ${this.props.selectedCurrency === currency.label ? "active" : ""}`}>{`${currency.symbol} ${currency.label}`}</li>) : ""
   }
-  handleCurrency(product: any){
-    let curr;
-    if(product.prices){
-      curr = product.prices.find((price:any)=> {return price.currency.label === this.props.selectedCurrency?.label});
-    }
-    return   (<p className={"price"}>{curr && (curr.currency.symbol + curr.amount)}</p>)
-  }
 
-  getProductSizes(product: any){
-    let sizes;
-    if(product.attributes){
-      sizes = product.attributes.find((attributeName:any)=> {return attributeName.name === "Size"});
-    }
-    return sizes?.items ?  <><p className={"caption"}>{sizes?.name}:</p>
-      <div className="size-wrapper">
-        {sizes?.items?.map((size: any, index: any)=> {return <div key={index + size.id} onClick={() => {this.setState({selectedSize: size.value})}} className={`size ${this.state.selectedSize === size.value ? "active" : ""}`}>{size.value}</div>})}
-      </div></> : ""
-  }
-  getProductColors(product: any){
-    let colors;
-
-    if(product.attributes){
-      colors = product.attributes.find((attributeName:any)=> {return attributeName.name === "Color"});
-    }
-    return colors?.items ?  <><p className={"caption"}>{colors?.name}:</p>
-      <div className="color-wrapper">
-        {colors?.items?.map((color: any, index: any)=> {return    <div key={index + color.id} onClick={() => {this.setState({selectedColor: color.value})}} className={`border ${this.state.selectedColor === color.value ? "active" : ""}`}><div style={{background: color.value}} className={"color"} ></div></div>})}
-      </div>
-    </> : ""
-  }
   render() {
     let categories = this.getCategoriesHtml()
     let currencies = this.getCurrenciesHtml()
-    console.log(this.props.cartProducts, "amounttt")
     return (
       <>
       <div className="app-header">
@@ -168,10 +132,10 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
               <CartProducts selectedCategory={this.props.selectedCategory}
                              callback={this.props.callback}
                              currencyCallback={this.props.currencyCallback}
-                             selectedCurrency={this.props.selectedCurrency} />
+                             selectedCurrency={this.props.selectedCurrency} big={false} />
               <div className="cart-products-total-price">
                 <span className={"total-price-caption"}>Total</span>
-                <span className={"total-price"}>{this.state.productsTotalPrice.symbol} {this.state.productsTotalPrice.amount}</span>
+                <span className={"total-price"}>{this.props.price.symbol} {this.props.price.amount}</span>
               </div>
               <div className="cart-btns">
                 <button className={"view-cart-btn"}><Link className="cart-link" to={"/cart"}>View bag</Link></button>
@@ -190,7 +154,9 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
 
 const mapStateToProps = (state: State) => {
   return{
-    cartProducts: state.cart.cartProducts
+    cartProducts: state.cart.cartProducts,
+    price: state.cart.price,
+    count: state.cart.count
   }
 }
 const mapDispatchToProps = (dispatch:any) => {

@@ -3,7 +3,12 @@ import React from "react";
 import {getCategories, getCurrencies} from "../../GQL";
 import {State} from "../../state";
 import {connect} from "react-redux";
-import {addCartProduct, removeCartProduct} from "../../state/action-creators";
+import {
+  addCartProduct,
+  countCartProducts,
+  countCartProductsPrice,
+  removeCartProduct
+} from "../../state/action-creators";
 
 
 interface ICartProducts {
@@ -14,6 +19,9 @@ interface ICartProducts {
   cartProducts: any;
   addCartProduct: any;
   removeCartProduct: any;
+  countCartProductsPrice: any;
+  countCartProducts: any;
+  big: any;
 }
 
 class CartProducts extends React.Component <ICartProducts, { selectedSize: string, selectedColor: string, categories: any, currencyDrawer: boolean, cartDrawer: boolean, currencies: any, cartProductsCounts: number, productsCount: number, productsTotalPrice: any}> {
@@ -54,6 +62,7 @@ class CartProducts extends React.Component <ICartProducts, { selectedSize: strin
 
   componentDidUpdate(prevProps: any, prevState: { categories: number; }) {
     if(this.props.cartProducts !== prevProps.cartProducts){
+      console.log("cartProducts have changed")
       this.countCartProducts()
       this.countCartProductsPrice()
     }
@@ -63,12 +72,17 @@ class CartProducts extends React.Component <ICartProducts, { selectedSize: strin
   }
   countCartProductsPrice(){
     let totalPrice = 0;
-    this.props.cartProducts && Object.values(this.props.cartProducts).forEach((cartProduct: any)=> totalPrice = totalPrice + cartProduct.product.prices.find((price:any)=> {return price.currency.label === this.props.selectedCurrency?.label}).amount * cartProduct.count)
-    this.setState({productsTotalPrice: {symbol: this.props.selectedCurrency?.symbol, amount: parseFloat(totalPrice.toFixed(2))}})
+    this.props.cartProducts && Object.values(this.props.cartProducts).forEach((cartProduct: any)=> {
+      totalPrice = totalPrice + cartProduct.product.prices.find((price:any)=>
+      {return price.currency.label === this.props.selectedCurrency?.label}).amount * cartProduct.count
+    })
+    this.props.countCartProductsPrice({symbol: this.props.selectedCurrency?.symbol, label: this.props.selectedCurrency?.label, amount: parseFloat(totalPrice.toFixed(2))})
+    // this.setState({productsTotalPrice: {symbol: this.props.selectedCurrency?.symbol, amount: parseFloat(totalPrice.toFixed(2))}})
   }
   countCartProducts(){
     let count = 0;
     this.props.cartProducts && Object.values(this.props.cartProducts).forEach((cartProduct: any)=> count = count + cartProduct.count)
+    this.props.countCartProducts(count)
     this.setState({productsCount: count})
   }
   handleCurrency(product: any){
@@ -105,7 +119,9 @@ class CartProducts extends React.Component <ICartProducts, { selectedSize: strin
     return (
       <>
                 {this.props.cartProducts ? Object.values(this.props.cartProducts).map((cartProduct: any, index: any)=>{
-                  return ( <div key={index+cartProduct.id} className={"cart-product-wrapper"}>
+                  return (
+                    <>
+                    <div key={index+cartProduct.id} className={`cart-product-wrapper ${this.props.big ? "big" : ""}`}>
                     <div className="cart-product-info">
                       <p className={"brand"}>{cartProduct.product.brand}</p>
                       <p className={"name"}>{cartProduct.product.name}</p>
@@ -113,14 +129,18 @@ class CartProducts extends React.Component <ICartProducts, { selectedSize: strin
                       {this.getProductSizes(cartProduct.product)}
                       {this.getProductColors(cartProduct.product)}
                     </div>
+                    <div className={"product-image-with-actions"}>
                     <div className={"cart-product-actions"}>
                       <button onClick={() => {this.props.removeCartProduct(cartProduct.product)}}>-</button>
                       <span>{cartProduct.count}</span>
                       <button onClick={() => {this.props.addCartProduct(cartProduct.product)}}>+</button>
                     </div>
                     <img src={cartProduct.product.gallery[0]} alt={cartProduct.product.id} />
-                  </div>)}
-                ) : "" }
+                    </div>
+                  </div>
+                      {this.props.big && <hr className={"separator"}/>}
+                    </>)
+                }) : "" }
       </>
     );
   }
@@ -138,7 +158,13 @@ const mapDispatchToProps = (dispatch:any) => {
     },
     removeCartProduct: (product: {}) => {
       dispatch(removeCartProduct(product))
-    }
+    },
+    countCartProductsPrice: (price: {}) => {
+      dispatch(countCartProductsPrice(price))
+    },
+    countCartProducts: (price: {}) => {
+      dispatch(countCartProducts(price))
+    },
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CartProducts);

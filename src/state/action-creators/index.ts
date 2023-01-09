@@ -18,7 +18,23 @@ export const removeCartProduct = (product: {}) => {
     })
   }
 }
+export const countCartProductsPrice = (product: {}) => {
+  return (dispatch: Dispatch<Action>) =>{
+    dispatch({
+      type: ActionTypes.COUNT_CART_PRODUCTS_PRICE,
+      payload: product
+    })
+  }
+}
 
+export const countCartProducts = (product: {}) => {
+  return (dispatch: Dispatch<Action>) =>{
+    dispatch({
+      type: ActionTypes.COUNT_CART_PRODUCTS,
+      payload: product
+    })
+  }
+}
 
 // export const countProductsAmount = () => {
 //   return (dispatch: Dispatch<Action>) =>{

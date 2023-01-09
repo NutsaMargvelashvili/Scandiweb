@@ -2,8 +2,9 @@ import {Action} from "../actions"
 import {ActionTypes} from "../action-types";
 
 const initialState = {
-  cartProducts: {}
-  // count: 0
+  cartProducts: {},
+  count: 0,
+  price: {symbol: "", label: "", amount: 0}
 };
 const reducer = (state: any = initialState, action: Action) =>{
 
@@ -67,7 +68,17 @@ const reducer = (state: any = initialState, action: Action) =>{
         }
       }
 
+    case ActionTypes.COUNT_CART_PRODUCTS_PRICE:
+      return{
+        ...state,
+        price:  {symbol: action.payload.symbol, label: action.payload.label, amount: action.payload.amount},
+      }
 
+    case ActionTypes.COUNT_CART_PRODUCTS:
+      return{
+        ...state,
+        count:  action.payload,
+      }
     // case ActionTypes.PRODUCTS_AMOUNT:
     //   let counts: any = [];
     //   state.cartProducts.forEach((x:any)=>{
