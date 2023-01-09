@@ -53,7 +53,6 @@ export const getProductByID = async (id: string) => {
         }
       }`
   })
-  console.log(result)
   return result.data.product
 }
 export const getProductsByCategory = async (category: string) => {
@@ -78,7 +77,6 @@ export const getProductsByCategory = async (category: string) => {
       }
     }`
   })
-  console.log(result)
   return result.data.category
 }
 export const getCurrencies = async () => {
@@ -91,6 +89,5 @@ export const getCurrencies = async () => {
       }
     }`
   })
-  console.log(result)
   return result.data.currencies
 }

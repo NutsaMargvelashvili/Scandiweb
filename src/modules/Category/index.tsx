@@ -34,7 +34,6 @@ class Category extends React.Component<ICategory, {categoryName: string, product
   }
 
   handleCurrency(product: any){
-    console.log("entered")
     let curr;
     if(product.prices){
       curr = product.prices.find((price:any)=> {return price.currency.label === this.props.currency?.label});
@@ -43,7 +42,7 @@ class Category extends React.Component<ICategory, {categoryName: string, product
     return   (<p className={"product-price"}>{curr && (curr.currency.symbol + curr.amount)}</p>)
   }
   componentDidMount() {
-    this.getProducts()
+    // this.getProducts()
   }
 
   componentDidUpdate(prevProps: any) {
@@ -54,8 +53,7 @@ class Category extends React.Component<ICategory, {categoryName: string, product
   getProducts() {
   //  const {products} = await getProductsByCategory(window.location.pathname.split('/')[1])
 
-    getProductsByCategory(window.location.pathname.split('/')[1]).then((value) => {
-      console.log(value, "valuuuue")
+    getProductsByCategory(this.props.category).then((value) => {
        this.setState({products: value.products})
       })
         .catch((e) => {

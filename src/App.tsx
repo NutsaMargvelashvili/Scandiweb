@@ -35,7 +35,6 @@ class App extends React.Component<IApp, {selectedCategory: string, selectedProdu
   }
   async componentDidMount() {
     this.categories = await getCategories();
-    console.log(this.categories)
   }
 
   render() {
@@ -45,6 +44,7 @@ class App extends React.Component<IApp, {selectedCategory: string, selectedProdu
         <AppHeader/>
         <Routes location={window.location} >
           <Route path="/cart" element={<Cart />}/>
+          <Route path="/" element={<Category productCallback={this.productCallback} selectedProduct={this.state.selectedProduct} />}/>
           <Route path="/:category" element={<Category productCallback={this.productCallback} selectedProduct={this.state.selectedProduct} />}/>
           <Route path='/:all/:productId' element={<Product/>}/>
         </Routes>

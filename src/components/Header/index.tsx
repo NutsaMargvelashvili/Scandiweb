@@ -42,7 +42,7 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
   componentDidMount() {
     this.getCategories()
     this.getCurrencies()
-    this.handleCategory(window.location.pathname.split('/')[1])
+    // this.handleCategory(window.location.pathname.split('/')[1])
     if (this.props.cartProducts){
       this.countCartProducts()
     }
@@ -67,12 +67,31 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
       })
   }
 
-  componentDidUpdate(prevProps: any, prevState: { currencies: any }) {
+  componentDidUpdate(prevProps: any, prevState: { currencies: any, categories: any }) {
     if(this.props.cartProducts !== prevProps.cartProducts){
       this.countCartProducts()
     }
     if(this.state.currencies !== prevState.currencies){
       this.handleCurrency({symbol: this.state.currencies[0].symbol, label: this.state.currencies[0].label})
+    }
+    if(this.state.categories !== prevState.categories){
+      // console.log((window.location.pathname.split('/')[1] === "") ? this.state.categories[0].name : window.location.pathname.split('/')[1], "wtf");
+      let urlMatch = false;
+      if(window.location.pathname.split('/')[1] !== ""){
+        this.state.categories.forEach((category: any) => {
+          if(category.name === window.location.pathname.split('/')[1]){
+            this.handleCategory(window.location.pathname.split('/')[1])
+            urlMatch = true;
+            return;
+          }
+        })
+      }
+      if(window.location.pathname.split('/')[1] === "" || !urlMatch){
+        console.log("entered")
+        window.history.pushState(null, "", this.state.categories[0].name)
+        this.handleCategory(this.state.categories[0].name)
+      }
+
     }
   }
   countCartProducts(){
@@ -81,7 +100,6 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
     this.setState({productsCount: count})
   }
   getCategoriesHtml() {
-    console.log(this.state.currencies, "currenciesss")
     return this.state.categories && this.state.categories[0] ? (this.state.categories.map((category: any, index: any) => (
       <li  key={index + category.name}  className={`Nav__item ${this.props.category === category.name ? "active" : ""}`}>
         <Link onClick={() => {this.handleCategory(category.name)}} className="Nav__link" to={category.name}>{category.name}</Link>
