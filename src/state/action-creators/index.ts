@@ -36,6 +36,15 @@ export const countCartProducts = (product: {}) => {
   }
 }
 
+export const selectCurrency = (product: {}) => {
+  return (dispatch: Dispatch<Action>) =>{
+    dispatch({
+      type: ActionTypes.SELECT_CURRENCY,
+      payload: product
+    })
+  }
+}
+
 // export const countProductsAmount = () => {
 //   return (dispatch: Dispatch<Action>) =>{
 //     dispatch({

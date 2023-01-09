@@ -3,6 +3,8 @@ import React from "react";
 import {getCategories, getProductsByCategory} from "../../GQL";
 
 import {Link} from "react-router-dom";
+import {State} from "../../state";
+import {connect} from "react-redux";
 
 // import { match } from 'react-router-dom';
 // interface DetailsProps {
@@ -12,9 +14,9 @@ import {Link} from "react-router-dom";
 
 interface ICategory {
   selectedCategory: string;
-  selectedCurrency: any;
   selectedProduct: [];
   productCallback: any;
+  currency: any;
   // cartDrawerOpen: boolean;
 }
 class Category extends React.Component<ICategory, {categoryName: string, products: any, amount: number, location: any, currentPath: any}> {
@@ -35,7 +37,7 @@ class Category extends React.Component<ICategory, {categoryName: string, product
     console.log("entered")
     let curr;
     if(product.prices){
-      curr = product.prices.find((price:any)=> {return price.currency.label === this.props.selectedCurrency?.label});
+      curr = product.prices.find((price:any)=> {return price.currency.label === this.props.currency?.label});
     }
 
     return   (<p className={"product-price"}>{curr && (curr.currency.symbol + curr.amount)}</p>)
@@ -98,4 +100,11 @@ class Category extends React.Component<ICategory, {categoryName: string, product
     );
   }
 };
-export default Category;
+
+
+const mapStateToProps = (state: State) => {
+  return{
+    currency: state.products.currency,
+  }
+}
+export default connect(mapStateToProps)(Category);

@@ -6,9 +6,8 @@ import {addCartProduct} from "../../state/action-creators";
 import {getProductByID, getProductsByCategory} from "../../GQL";
 
 interface IProduct {
-  // selectedProduct: any;
-  selectedCurrency: any;
   cartProducts: [];
+  currency: any;
   addCartProduct: any;
 }
 class Product extends React.Component<IProduct, {selectedSize: string, selectedColor: string, selectedImage: number, selectedProduct: any}> {
@@ -60,7 +59,7 @@ class Product extends React.Component<IProduct, {selectedSize: string, selectedC
   handleCurrency(){
     let curr;
     if(this.state.selectedProduct.prices){
-      curr = this.state.selectedProduct.prices.find((price:any)=> {return price.currency.label === this.props.selectedCurrency?.label});
+      curr = this.state.selectedProduct.prices.find((price:any)=> {return price.currency.label === this.props.currency?.label});
     }
     return   (<p className={"price"}>{curr && (curr.currency.symbol + curr.amount)}</p>)
   }
@@ -99,7 +98,8 @@ class Product extends React.Component<IProduct, {selectedSize: string, selectedC
 };
 const mapStateToProps = (state: State) => {
   return{
-    cartProducts: state.cart.cartProducts
+    cartProducts: state.cart.cartProducts,
+    currency: state.products.currency,
   }
 }
 // const mapDispatchToProps = (dispatch:any, product: {}) =>({

@@ -7,11 +7,10 @@ import CartProducts from "../../components/CartProducts";
 interface ICart {
   selectedCategory: any;
   callback: any;
-  currencyCallback: any;
-  selectedCurrency: any;
   cartProducts: any;
   price: any;
-  count: number
+  count: number,
+  currency: any
 }
 class Cart extends React.Component<ICart, {priceWithTax: number}> {
   public tax = 21;
@@ -28,7 +27,7 @@ class Cart extends React.Component<ICart, {priceWithTax: number}> {
     if(this.props.cartProducts !== prevProps.cartProducts){
       this.computePriceWithTax()
     }
-    if(this.props.selectedCurrency !== prevProps.selectedCurrency){
+    if(this.props.currency !== prevProps.currency){
       this.computePriceWithTax()
     }
   }
@@ -45,8 +44,7 @@ class Cart extends React.Component<ICart, {priceWithTax: number}> {
         <hr className={"separator"}/>
         <CartProducts selectedCategory={this.props.selectedCategory}
                       callback={this.props.callback}
-                      currencyCallback={this.props.currencyCallback}
-                      selectedCurrency={this.props.selectedCurrency} big={true}/>
+                      big={true}/>
       <div className="total">
         <p className={"tax"}>Tax {this.tax}%: <span>{this.props.price.symbol}{this.state.priceWithTax}</span></p>
         <p className={"quantity"}>Quantity: <span>{this.props.count}</span></p>
@@ -61,7 +59,8 @@ const mapStateToProps = (state: State) => {
   return{
     cartProducts: state.cart.cartProducts,
     price: state.cart.price,
-    count: state.cart.count
+    count: state.cart.count,
+    currency: state.products.currency
   }
 }
 export default connect(mapStateToProps)(Cart);

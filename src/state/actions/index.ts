@@ -20,4 +20,9 @@ interface countCartProductsAction {
   type: ActionTypes.COUNT_CART_PRODUCTS,
   payload: any
 }
-export type Action = AddCartProductAction | RemoveCartProductAction | countCartProductsPriceAction |countCartProductsAction;
+
+interface selectCurrencyAction {
+  type: ActionTypes.SELECT_CURRENCY,
+  payload: any
+}
+export type Action = AddCartProductAction | RemoveCartProductAction | countCartProductsPriceAction | countCartProductsAction | selectCurrencyAction;

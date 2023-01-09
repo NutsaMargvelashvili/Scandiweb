@@ -14,14 +14,13 @@ import {
 interface ICartProducts {
   selectedCategory: any;
   callback: any;
-  currencyCallback: any;
-  selectedCurrency: any;
   cartProducts: any;
   addCartProduct: any;
   removeCartProduct: any;
   countCartProductsPrice: any;
   countCartProducts: any;
   big: any;
+  currency: any;
 }
 
 class CartProducts extends React.Component <ICartProducts, { selectedSize: string, selectedColor: string, categories: any, currencyDrawer: boolean, cartDrawer: boolean, currencies: any, cartProductsCounts: number, productsCount: number, productsTotalPrice: any}> {
@@ -29,7 +28,7 @@ class CartProducts extends React.Component <ICartProducts, { selectedSize: strin
     super(props);
 
     // Initializing the state
-    this.state = {selectedSize: "S", selectedColor: "#D3D2D5", categories: [], currencyDrawer: false, cartDrawer: false, currencies: [], cartProductsCounts: 0, productsCount: 0, productsTotalPrice: {price: 0, symbol: this.props.selectedCurrency.symbol}};
+    this.state = {selectedSize: "S", selectedColor: "#D3D2D5", categories: [], currencyDrawer: false, cartDrawer: false, currencies: [], cartProductsCounts: 0, productsCount: 0, productsTotalPrice: {price: 0, symbol: this.props.currency.symbol}};
   }
 
   componentDidMount() {
@@ -66,7 +65,7 @@ class CartProducts extends React.Component <ICartProducts, { selectedSize: strin
       this.countCartProducts()
       this.countCartProductsPrice()
     }
-    if(this.props.selectedCurrency !== prevProps.selectedCurrency){
+    if(this.props.currency !== prevProps.currency){
       this.countCartProductsPrice()
     }
   }
@@ -74,10 +73,10 @@ class CartProducts extends React.Component <ICartProducts, { selectedSize: strin
     let totalPrice = 0;
     this.props.cartProducts && Object.values(this.props.cartProducts).forEach((cartProduct: any)=> {
       totalPrice = totalPrice + cartProduct.product.prices.find((price:any)=>
-      {return price.currency.label === this.props.selectedCurrency?.label}).amount * cartProduct.count
+      {return price.currency.label === this.props.currency?.label}).amount * cartProduct.count
     })
-    this.props.countCartProductsPrice({symbol: this.props.selectedCurrency?.symbol, label: this.props.selectedCurrency?.label, amount: parseFloat(totalPrice.toFixed(2))})
-    // this.setState({productsTotalPrice: {symbol: this.props.selectedCurrency?.symbol, amount: parseFloat(totalPrice.toFixed(2))}})
+    this.props.countCartProductsPrice({symbol: this.props.currency?.symbol, label: this.props.currency?.label, amount: parseFloat(totalPrice.toFixed(2))})
+    // this.setState({productsTotalPrice: {symbol: this.props.currency?.symbol, amount: parseFloat(totalPrice.toFixed(2))}})
   }
   countCartProducts(){
     let count = 0;
@@ -88,7 +87,7 @@ class CartProducts extends React.Component <ICartProducts, { selectedSize: strin
   handleCurrency(product: any){
     let curr;
     if(product.prices){
-      curr = product.prices.find((price:any)=> {return price.currency.label === this.props.selectedCurrency?.label});
+      curr = product.prices.find((price:any)=> {return price.currency.label === this.props.currency?.label});
     }
     return   (<p className={"price"}>{curr && (curr.currency.symbol + curr.amount)}</p>)
   }
@@ -148,7 +147,8 @@ class CartProducts extends React.Component <ICartProducts, { selectedSize: strin
 
 const mapStateToProps = (state: State) => {
   return{
-    cartProducts: state.cart.cartProducts
+    cartProducts: state.cart.cartProducts,
+    currency: state.products.currency
   }
 }
 const mapDispatchToProps = (dispatch:any) => {

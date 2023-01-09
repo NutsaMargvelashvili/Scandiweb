@@ -7,20 +7,20 @@ import Logo from "../../assets/svg/Logo.svg"
 import {getCategories, getCurrencies} from "../../GQL";
 import {State} from "../../state";
 import {connect} from "react-redux";
-import {addCartProduct, removeCartProduct} from "../../state/action-creators";
+import {addCartProduct, removeCartProduct, selectCurrency} from "../../state/action-creators";
 import CartProducts from "../CartProducts";
 
 
 interface IHeader {
   selectedCategory: any;
   callback: any;
-  currencyCallback: any;
-  selectedCurrency: any;
   cartProducts: any;
   price: any;
   count: any;
+  currency: any;
   addCartProduct: any;
   removeCartProduct: any;
+  selectCurrency: any;
   // setCartDrawerOpen: any;
   // cartDrawerOpen: any;
 }
@@ -37,8 +37,8 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
     this.props.callback(selectedCategor)
   }
 
-  handleCurrencyCallback(selectedCurrency: any) {
-    this.props.currencyCallback(selectedCurrency)
+  handleCurrency(currency: any){
+    this.props.selectCurrency({symbol: currency.symbol, label: currency.label})
   }
 
   componentDidMount() {
@@ -68,11 +68,12 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
       })
   }
 
-  componentDidUpdate(prevProps: any, prevState: { categories: number; }) {
+  componentDidUpdate(prevProps: any, prevState: { currencies: any }) {
     if(this.props.cartProducts !== prevProps.cartProducts){
       this.countCartProducts()
     }
-    if(this.props.selectedCurrency !== prevProps.selectedCurrency){
+    if(this.state.currencies !== prevState.currencies){
+      this.handleCurrency({symbol: this.state.currencies[0].symbol, label: this.state.currencies[0].label})
     }
   }
   countCartProducts(){
@@ -81,6 +82,7 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
     this.setState({productsCount: count})
   }
   getCategoriesHtml() {
+    console.log(this.state.currencies, "currenciesss")
     return this.state.categories && this.state.categories[0] ? (this.state.categories.map((category: any, index: any) => (
       <li  key={index + category.name}  className={`Nav__item ${this.props.selectedCategory === category.name ? "active" : ""}`}>
         <Link onClick={() => this.handleCallback(category.name)} className="Nav__link" to={category.name}>{category.name}</Link>
@@ -90,8 +92,8 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
 
   getCurrenciesHtml(){
     return this.state.currencies ? this.state.currencies.map((currency: any, index: any)=>
-        <li key={index + currency.label} onClick={() => this.handleCurrencyCallback(currency)}
-            className={`list-item ${this.props.selectedCurrency === currency.label ? "active" : ""}`}>{`${currency.symbol} ${currency.label}`}</li>) : ""
+        <li key={index + currency.label} onClick={() => {this.handleCurrency(currency)}}
+            className={`list-item ${this.props.currency.label === currency.label ? "active" : ""}`}>{`${currency.symbol} ${currency.label}`}</li>) : ""
   }
 
   render() {
@@ -113,7 +115,7 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
         <div className="actions">
           <div className="currency-convertor"
                onClick={() => this.setState({currencyDrawer: !this.state.currencyDrawer, cartDrawer: false})}>
-            <span className={"currency"}>{this.props.selectedCurrency?.symbol}</span>
+            <span className={"currency"}>{this.props.currency?.symbol}</span>
             <img className={"arrow-icon"} alt={"arrow"} src={Arrow}/>
             {this.state.currencyDrawer && (<div className="currency-drawer">
               <ul className="currency-list-items">
@@ -131,8 +133,7 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
               </div>
               <CartProducts selectedCategory={this.props.selectedCategory}
                              callback={this.props.callback}
-                             currencyCallback={this.props.currencyCallback}
-                             selectedCurrency={this.props.selectedCurrency} big={false} />
+                             big={false} />
               <div className="cart-products-total-price">
                 <span className={"total-price-caption"}>Total</span>
                 <span className={"total-price"}>{this.props.price.symbol} {this.props.price.amount}</span>
@@ -156,7 +157,8 @@ const mapStateToProps = (state: State) => {
   return{
     cartProducts: state.cart.cartProducts,
     price: state.cart.price,
-    count: state.cart.count
+    count: state.cart.count,
+    currency: state.products.currency,
   }
 }
 const mapDispatchToProps = (dispatch:any) => {
@@ -166,7 +168,10 @@ const mapDispatchToProps = (dispatch:any) => {
     },
     removeCartProduct: (product: {}) => {
       dispatch(removeCartProduct(product))
-    }
+    },
+    selectCurrency: (product: {}) => {
+      dispatch(selectCurrency(product))
+    },
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(AppHeader);
