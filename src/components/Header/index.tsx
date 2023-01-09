@@ -7,22 +7,20 @@ import Logo from "../../assets/svg/Logo.svg"
 import {getCategories, getCurrencies} from "../../GQL";
 import {State} from "../../state";
 import {connect} from "react-redux";
-import {addCartProduct, removeCartProduct, selectCurrency} from "../../state/action-creators";
+import {addCartProduct, removeCartProduct, selectCategory, selectCurrency} from "../../state/action-creators";
 import CartProducts from "../CartProducts";
 
 
 interface IHeader {
-  selectedCategory: any;
-  callback: any;
   cartProducts: any;
   price: any;
   count: any;
   currency: any;
+  category: any;
   addCartProduct: any;
   removeCartProduct: any;
   selectCurrency: any;
-  // setCartDrawerOpen: any;
-  // cartDrawerOpen: any;
+  selectCategory: any;
 }
 
 class AppHeader extends React.Component <IHeader, { selectedSize: string, selectedColor: string, categories: any, currencyDrawer: boolean, cartDrawer: boolean, currencies: any, cartProductsCounts: number, productsCount: number}> {
@@ -33,8 +31,8 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
     this.state = {selectedSize: "S", selectedColor: "#D3D2D5", categories: [], currencyDrawer: false, cartDrawer: false, currencies: [], cartProductsCounts: 0, productsCount: 0};
   }
 
-  handleCallback(selectedCategor: any) {
-    this.props.callback(selectedCategor)
+  handleCategory(category: any){
+    this.props.selectCategory(category)
   }
 
   handleCurrency(currency: any){
@@ -44,6 +42,7 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
   componentDidMount() {
     this.getCategories()
     this.getCurrencies()
+    this.handleCategory(window.location.pathname.split('/')[1])
     if (this.props.cartProducts){
       this.countCartProducts()
     }
@@ -84,8 +83,8 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
   getCategoriesHtml() {
     console.log(this.state.currencies, "currenciesss")
     return this.state.categories && this.state.categories[0] ? (this.state.categories.map((category: any, index: any) => (
-      <li  key={index + category.name}  className={`Nav__item ${this.props.selectedCategory === category.name ? "active" : ""}`}>
-        <Link onClick={() => this.handleCallback(category.name)} className="Nav__link" to={category.name}>{category.name}</Link>
+      <li  key={index + category.name}  className={`Nav__item ${this.props.category === category.name ? "active" : ""}`}>
+        <Link onClick={() => {this.handleCategory(category.name)}} className="Nav__link" to={category.name}>{category.name}</Link>
       </li>
     ))) : ""
   }
@@ -108,7 +107,7 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
           </ul>
         </nav>
         <div className="logo-wrapper">
-          <Link onClick={()=>{this.handleCallback(this.state.categories[0]?.name)}} to={`/${this.state.categories[0]?.name}`} className="brand">
+          <Link onClick={()=>{this.handleCategory(this.state.categories[0]?.name)}} to={`/${this.state.categories[0]?.name}`} className="brand">
             <img src={Logo} alt={"logo"} className="logo"/>
           </Link>
         </div>
@@ -131,9 +130,7 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
                 <span>My Bag, </span>
                 <span>{this.state.productsCount} {this.state.productsCount > 1 ? "items" : "item"}</span>
               </div>
-              <CartProducts selectedCategory={this.props.selectedCategory}
-                             callback={this.props.callback}
-                             big={false} />
+              <CartProducts big={false} />
               <div className="cart-products-total-price">
                 <span className={"total-price-caption"}>Total</span>
                 <span className={"total-price"}>{this.props.price.symbol} {this.props.price.amount}</span>
@@ -159,6 +156,7 @@ const mapStateToProps = (state: State) => {
     price: state.cart.price,
     count: state.cart.count,
     currency: state.products.currency,
+    category: state.products.category
   }
 }
 const mapDispatchToProps = (dispatch:any) => {
@@ -169,8 +167,11 @@ const mapDispatchToProps = (dispatch:any) => {
     removeCartProduct: (product: {}) => {
       dispatch(removeCartProduct(product))
     },
-    selectCurrency: (product: {}) => {
-      dispatch(selectCurrency(product))
+    selectCurrency: (currency: {}) => {
+      dispatch(selectCurrency(currency))
+    },
+    selectCategory: (category: {}) => {
+      dispatch(selectCategory(category))
     },
   }
 }

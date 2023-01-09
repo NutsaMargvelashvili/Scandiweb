@@ -18,7 +18,6 @@ class App extends React.Component<IApp, {selectedCategory: string, selectedProdu
     super(props);
     // Initializing the state
     this.state = { selectedCategory: "", selectedProduct: []};
-    this.callback = this.callback.bind(this);
     this.productCallback = this.productCallback.bind(this);
     // this.setCartDrawerOpen = this.setCartDrawerOpen.bind(this);
   }
@@ -26,9 +25,6 @@ class App extends React.Component<IApp, {selectedCategory: string, selectedProdu
   // setSelectedCategory(category: string) {
   //   this.setState({selectedCategory: category})
   // }
-  callback(payload: any){
-    this.setState({selectedCategory: payload})
-  }
 
  // setCartDrawerOpen(payload: any){
  //    this.setState({cartDrawerOpen: payload})
@@ -46,13 +42,10 @@ class App extends React.Component<IApp, {selectedCategory: string, selectedProdu
     // const { history } = this.props;
     return (
       <div className="App">
-        <AppHeader
-          selectedCategory={this.state.selectedCategory}
-          callback={this.callback}
-        />
+        <AppHeader/>
         <Routes location={window.location} >
-          <Route path="/cart" element={<Cart selectedCategory={this.state.selectedCategory} callback={this.callback} />}/>
-          <Route path="/:category" element={<Category productCallback={this.productCallback} selectedProduct={this.state.selectedProduct} selectedCategory={this.state.selectedCategory}/>}/>
+          <Route path="/cart" element={<Cart />}/>
+          <Route path="/:category" element={<Category productCallback={this.productCallback} selectedProduct={this.state.selectedProduct} />}/>
           <Route path='/:all/:productId' element={<Product/>}/>
         </Routes>
       </div>

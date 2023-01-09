@@ -12,8 +12,6 @@ import {
 
 
 interface ICartProducts {
-  selectedCategory: any;
-  callback: any;
   cartProducts: any;
   addCartProduct: any;
   removeCartProduct: any;

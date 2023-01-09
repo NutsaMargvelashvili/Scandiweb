@@ -13,10 +13,10 @@ import {connect} from "react-redux";
 // }
 
 interface ICategory {
-  selectedCategory: string;
   selectedProduct: [];
   productCallback: any;
   currency: any;
+  category: any;
   // cartDrawerOpen: boolean;
 }
 class Category extends React.Component<ICategory, {categoryName: string, products: any, amount: number, location: any, currentPath: any}> {
@@ -47,7 +47,7 @@ class Category extends React.Component<ICategory, {categoryName: string, product
   }
 
   componentDidUpdate(prevProps: any) {
-    if (this.props.selectedCategory !== prevProps.selectedCategory) {
+    if (this.props.category !== prevProps.category) {
       this.getProducts()
     }
   }
@@ -92,7 +92,7 @@ class Category extends React.Component<ICategory, {categoryName: string, product
      let products = this.getProductsHtml();
     return (
       <div className="category-wrapper">
-        <div className="category-name">{this.props.selectedCategory}</div>
+        <div className="category-name">{this.props.category}</div>
         <div className="products-wrapper">
           {products}
         </div>
@@ -105,6 +105,7 @@ class Category extends React.Component<ICategory, {categoryName: string, product
 const mapStateToProps = (state: State) => {
   return{
     currency: state.products.currency,
+    category: state.products.category,
   }
 }
 export default connect(mapStateToProps)(Category);

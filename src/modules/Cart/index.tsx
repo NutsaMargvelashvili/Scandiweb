@@ -5,12 +5,11 @@ import {connect} from "react-redux";
 import CartProducts from "../../components/CartProducts";
 
 interface ICart {
-  selectedCategory: any;
-  callback: any;
   cartProducts: any;
   price: any;
   count: number,
   currency: any
+  category: any,
 }
 class Cart extends React.Component<ICart, {priceWithTax: number}> {
   public tax = 21;
@@ -42,9 +41,7 @@ class Cart extends React.Component<ICart, {priceWithTax: number}> {
       <div className="cart-wrapper">
         <h1 className={"caption"}>Cart</h1>
         <hr className={"separator"}/>
-        <CartProducts selectedCategory={this.props.selectedCategory}
-                      callback={this.props.callback}
-                      big={true}/>
+        <CartProducts big={true}/>
       <div className="total">
         <p className={"tax"}>Tax {this.tax}%: <span>{this.props.price.symbol}{this.state.priceWithTax}</span></p>
         <p className={"quantity"}>Quantity: <span>{this.props.count}</span></p>
@@ -60,7 +57,8 @@ const mapStateToProps = (state: State) => {
     cartProducts: state.cart.cartProducts,
     price: state.cart.price,
     count: state.cart.count,
-    currency: state.products.currency
+    currency: state.products.currency,
+    category: state.products.category,
   }
 }
 export default connect(mapStateToProps)(Cart);

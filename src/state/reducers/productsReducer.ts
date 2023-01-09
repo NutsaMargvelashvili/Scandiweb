@@ -14,6 +14,11 @@ const reducer = (state: any = initialState, action: Action) =>{
         ...state,
         currency:  action.payload,
       }
+    case ActionTypes.SELECT_CATEGORY:
+      return{
+        ...state,
+        category:  action.payload,
+      }
     default:
       return state
   }

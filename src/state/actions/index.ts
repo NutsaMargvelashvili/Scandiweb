@@ -25,4 +25,8 @@ interface selectCurrencyAction {
   type: ActionTypes.SELECT_CURRENCY,
   payload: any
 }
-export type Action = AddCartProductAction | RemoveCartProductAction | countCartProductsPriceAction | countCartProductsAction | selectCurrencyAction;
+interface selectCategoryAction {
+  type: ActionTypes.SELECT_CATEGORY,
+  payload: any
+}
+export type Action = AddCartProductAction | RemoveCartProductAction | countCartProductsPriceAction | countCartProductsAction | selectCurrencyAction | selectCategoryAction;
