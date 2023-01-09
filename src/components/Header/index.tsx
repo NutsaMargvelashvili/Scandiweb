@@ -116,6 +116,8 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
   render() {
     let categories = this.getCategoriesHtml()
     let currencies = this.getCurrenciesHtml()
+    console.log("shemovidaa", this.state.cartDrawer)
+
     return (
       <>
       <div className="app-header">
@@ -140,9 +142,11 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
               </ul>
             </div>)}
           </div>
-          <div className="cart" onClick={() => this.setState({cartDrawer: !this.state.cartDrawer, currencyDrawer: false})}>
+          <div className="header-cart-wrapper">
+          <div className="cart" onClick={() => { this.setState({cartDrawer: !this.state.cartDrawer, currencyDrawer: false}); }}>
             <img className={"cart-icon"} alt={"cart"} src={Cart}/>
             <div className="cart-product-amount">{this.state.productsCount}</div>
+          </div>
             {this.state.cartDrawer && (<div className="cart-drawer">
               <div className={"bag-items-amount"}>
                 <span>My Bag, </span>
@@ -162,7 +166,7 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
           </div>
         </div>
       </div>
-    {this.state.cartDrawer && <div className="shade"></div>}
+    {this.state.cartDrawer && <div onClick={()=>this.setState({cartDrawer: false})} className="shade"></div>}
     </>
     );
   }
