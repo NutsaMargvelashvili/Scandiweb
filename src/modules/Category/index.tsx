@@ -42,7 +42,9 @@ class Category extends React.Component<ICategory, {categoryName: string, product
     return   (<p className={"product-price"}>{curr && (curr.currency.symbol + curr.amount)}</p>)
   }
   componentDidMount() {
-    // this.getProducts()
+    if(this.props.category !== ""){
+      this.getProducts()
+    }
   }
 
   componentDidUpdate(prevProps: any) {
