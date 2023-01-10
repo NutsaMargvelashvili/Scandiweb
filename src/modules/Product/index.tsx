@@ -3,18 +3,18 @@ import React from "react";
 import {connect} from "react-redux";
 import {State} from "../../state";
 import {addCartProduct} from "../../state/action-creators";
-import {getProductByID, getProductsByCategory} from "../../GQL";
+import {getProductByID} from "../../GQL";
 
 interface IProduct {
   cartProducts: [];
   currency: any;
   addCartProduct: any;
 }
-class Product extends React.Component<IProduct, {selectedSize: string, selectedColor: string, selectedImage: number, selectedProduct: any}> {
+class Product extends React.Component<IProduct, {selectedImage: number, selectedProduct: any, selectedAttribute: any}> {
   public product = [];
   constructor(props: any) {
     super(props);
-    this.state = { selectedSize: "S", selectedColor: "#D3D2D5", selectedImage: 0, selectedProduct: []};
+    this.state = {selectedImage: 0, selectedProduct: [], selectedAttribute: {}};
     // Initializing the state
 
   }
@@ -31,31 +31,38 @@ class Product extends React.Component<IProduct, {selectedSize: string, selectedC
         console.error(e); // "oh, no!"
       })
   }
-
-  getProductSizes(){
-    let sizes;
-    if(this.state.selectedProduct.attributes){
-      sizes = this.state.selectedProduct.attributes.find((attributeName:any)=> {return attributeName.name === "Size"});
-    }
-  return sizes?.items ?  <><p className={"caption"}>{sizes?.name}:</p>
-      <div className="size-wrapper">
-        {sizes?.items?.map((size: any, index: any)=> {return <div key={index + size.id} onClick={() => {this.setState({selectedSize: size.value})}} className={`size ${this.state.selectedSize === size.value ? "active" : ""}`}>{size.value}</div>})}
-      </div></> : ""
+  handleAttribute(name: string, value:any){
+    let attribute: any = this.state.selectedAttribute;
+    attribute[name] = value;
+   this.setState({selectedAttribute: attribute})
+    console.log(this.state.selectedAttribute, "selected attribute")
   }
+  getProductAttributes(){
+    let attribute;
 
-  getProductColors(){
-    let colors;
-
-    if(this.state.selectedProduct.attributes){
-      colors = this.state.selectedProduct.attributes.find((attributeName:any)=> {return attributeName.name === "Color"});
-    }
-    return colors?.items ?  <><p className={"caption"}>{colors?.name}:</p>
-      <div className="color-wrapper">
-        {colors?.items?.map((color: any, index: any)=> {return    <div key={index + color.id} onClick={() => {this.setState({selectedColor: color.value})}} className={`border ${this.state.selectedColor === color.value ? "active" : ""}`}><div style={{background: color.value}} className={"color"} ></div></div>})}
-      </div>
-    </> : ""
+    if(this.state.selectedProduct.attributes)
+      attribute = this.state.selectedProduct.attributes.map((attribute:any)=>{
+        if(attribute.type === "text") {
+          let attributeName = attribute.name;
+          return ( <><p className={"caption"}>{attribute.name}:</p>
+        <div className="text-attribute-wrapper">
+          {attribute?.items?.map((attribute: any, index: any)=>
+            <div key={index + attribute.id} onClick={() => {this.handleAttribute(attributeName, attribute.value)}} className={`text-attribute ${this.state.selectedAttribute[attributeName] === attribute.value ? "active" : ""}`}>{attribute.value}</div>)}
+        </div>
+      </>)
+        }
+        else if(attribute.type === "swatch"){
+          let attributeName = attribute.name;
+          return ( <><p className={"caption"}>{attribute.name}:</p>
+            <div className="swatch-attribute-wrapper">
+              {attribute?.items?.map((attribute: any, index: any)=> {return <div key={index + attribute.id} onClick={() => {this.handleAttribute(attributeName, attribute.value)}} className={`border ${this.state.selectedAttribute[attributeName] === attribute.value ? "active" : ""}`}><div style={{background: attribute.value}} className={"swatch-attribute"} ></div></div>})}
+            </div>
+          </>)
+        }
+        return <></>
+         } );
+    return attribute
   }
-
   handleCurrency(){
     let curr;
     if(this.state.selectedProduct.prices){
@@ -69,10 +76,8 @@ class Product extends React.Component<IProduct, {selectedSize: string, selectedC
   }
 
   render() {
-    //console.log(this.props.cartProducts, "cartproductttt")
    let product = this.getProductHtml()
-   let productSizes = this.getProductSizes()
-   let productColors = this.getProductColors()
+   let productAttributes = this.getProductAttributes()
     return (
       <div className="product-wrapper">
         <div className="gallery">
@@ -84,8 +89,7 @@ class Product extends React.Component<IProduct, {selectedSize: string, selectedC
         <div className="product-info">
           <p className={"brand"}>{this.state.selectedProduct.brand}</p>
           <p className={"name"}>{this.state.selectedProduct.name}</p>
-            {productSizes}
-            {productColors}
+            {productAttributes}
           <p className={"caption"}>price:</p>
           {this.handleCurrency()}
           <button onClick={() => {this.props.addCartProduct(this.state.selectedProduct)}} className={"add-cart-btn"}>Add to cart</button>

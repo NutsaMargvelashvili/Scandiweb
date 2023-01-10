@@ -116,7 +116,6 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
   render() {
     let categories = this.getCategoriesHtml()
     let currencies = this.getCurrenciesHtml()
-    console.log("shemovidaa", this.state.cartDrawer)
 
     return (
       <>
@@ -158,7 +157,7 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
                 <span className={"total-price"}>{this.props.price.symbol} {this.props.price.amount}</span>
               </div>
               <div className="cart-btns">
-                <button className={"view-cart-btn"}><Link className="cart-link" to={"/cart"}>View bag</Link></button>
+                <button className={"view-cart-btn"}><Link onClick={()=>this.setState({cartDrawer: false})} className="cart-link" to={"/cart"}>View bag</Link></button>
                 <button className={"check-out-btn"}><Link className="cart-link" to={"/cart"}>Check out</Link></button>
               </div>
             </div>)

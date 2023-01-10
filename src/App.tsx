@@ -11,13 +11,13 @@ import {connect} from "react-redux"
 interface IApp {
   // onAddCartProduct: any
 }
-class App extends React.Component<IApp, {selectedCategory: string, selectedProduct: []}> {
+class App extends React.Component<IApp, {selectedProduct: []}> {
   public categories = {}
 
   constructor(props: any) {
     super(props);
     // Initializing the state
-    this.state = { selectedCategory: "", selectedProduct: []};
+    this.state = { selectedProduct: []};
     this.productCallback = this.productCallback.bind(this);
     // this.setCartDrawerOpen = this.setCartDrawerOpen.bind(this);
   }

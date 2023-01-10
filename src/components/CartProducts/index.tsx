@@ -21,12 +21,12 @@ interface ICartProducts {
   currency: any;
 }
 
-class CartProducts extends React.Component <ICartProducts, { selectedSize: string, selectedColor: string, categories: any, currencyDrawer: boolean, cartDrawer: boolean, currencies: any, cartProductsCounts: number, productsCount: number, productsTotalPrice: any}> {
+class CartProducts extends React.Component <ICartProducts, {selectedAttribute: any, categories: any, currencyDrawer: boolean, cartDrawer: boolean, currencies: any, cartProductsCounts: number, productsCount: number, productsTotalPrice: any}> {
   constructor(props: any) {
     super(props);
 
     // Initializing the state
-    this.state = {selectedSize: "S", selectedColor: "#D3D2D5", categories: [], currencyDrawer: false, cartDrawer: false, currencies: [], cartProductsCounts: 0, productsCount: 0, productsTotalPrice: {price: 0, symbol: this.props.currency.symbol}};
+    this.state = {selectedAttribute: {}, categories: [], currencyDrawer: false, cartDrawer: false, currencies: [], cartProductsCounts: 0, productsCount: 0, productsTotalPrice: {price: 0, symbol: this.props.currency.symbol}};
   }
 
   componentDidMount() {
@@ -90,27 +90,58 @@ class CartProducts extends React.Component <ICartProducts, { selectedSize: strin
     return   (<p className={"price"}>{curr && (curr.currency.symbol + curr.amount)}</p>)
   }
 
-  getProductSizes(product: any){
-    let sizes;
-    if(product.attributes){
-      sizes = product.attributes.find((attributeName:any)=> {return attributeName.name === "Size"});
-    }
-    return sizes?.items ?  <><p className={"caption"}>{sizes?.name}:</p>
-      <div className="size-wrapper">
-        {sizes?.items?.map((size: any, index: any)=> {return <div key={index + size.id} onClick={() => {this.setState({selectedSize: size.value})}} className={`size ${this.state.selectedSize === size.value ? "active" : ""}`}>{size.value}</div>})}
-      </div></> : ""
+  // getProductSizes(product: any){
+  //   let sizes;
+  //   if(product.attributes){
+  //     sizes = product.attributes.find((attributeName:any)=> {return attributeName.name === "Size"});
+  //   }
+  //   return sizes?.items ?  <><p className={"caption"}>{sizes?.name}:</p>
+  //     <div className="size-wrapper">
+  //       {sizes?.items?.map((size: any, index: any)=> {return <div key={index + size.id} onClick={() => {this.setState({selectedSize: size.value})}} className={`size ${this.state.selectedSize === size.value ? "active" : ""}`}>{size.value}</div>})}
+  //     </div></> : ""
+  // }
+  // getProductColors(product: any){
+  //   let colors;
+  //
+  //   if(product.attributes){
+  //     colors = product.attributes.find((attributeName:any)=> {return attributeName.name === "Color"});
+  //   }
+  //   return colors?.items ?  <><p className={"caption"}>{colors?.name}:</p>
+  //     <div className="color-wrapper">
+  //       {colors?.items?.map((color: any, index: any)=> {return    <div key={index + color.id} onClick={() => {this.setState({selectedColor: color.value})}} className={`border ${this.state.selectedColor === color.value ? "active" : ""}`}><div style={{background: color.value}} className={"color"} ></div></div>})}
+  //     </div>
+  //   </> : ""
+  // }
+  handleAttribute(name: string, value:any){
+    let attribute: any = this.state.selectedAttribute;
+    attribute[name] = value;
+    this.setState({selectedAttribute: attribute})
+    console.log(this.state.selectedAttribute, "selected attribute")
   }
-  getProductColors(product: any){
-    let colors;
-
-    if(product.attributes){
-      colors = product.attributes.find((attributeName:any)=> {return attributeName.name === "Color"});
-    }
-    return colors?.items ?  <><p className={"caption"}>{colors?.name}:</p>
-      <div className="color-wrapper">
-        {colors?.items?.map((color: any, index: any)=> {return    <div key={index + color.id} onClick={() => {this.setState({selectedColor: color.value})}} className={`border ${this.state.selectedColor === color.value ? "active" : ""}`}><div style={{background: color.value}} className={"color"} ></div></div>})}
-      </div>
-    </> : ""
+  getProductAttributes(selectedProduct: any){
+    let attribute;
+    if(selectedProduct.attributes)
+      attribute = selectedProduct.attributes.map((attribute:any)=>{
+        if(attribute.type === "text") {
+          let attributeName = attribute.name;
+          return ( <><p className={"caption"}>{attribute.name}:</p>
+            <div className={`text-attribute-wrapper ${attribute.name === "Capacity" ? "rectangle" : ""}`}>
+              {attribute?.items?.map((attribute: any, index: any)=>
+                <div key={index + attribute.id} onClick={() => {this.handleAttribute(attributeName, attribute.value)}} className={`text-attribute ${this.state.selectedAttribute[attributeName] === attribute.value ? "active" : ""}`}>{attribute.value}</div>)}
+            </div>
+          </>)
+        }
+        else if(attribute.type === "swatch"){
+          let attributeName = attribute.name;
+          return ( <><p className={"caption"}>{attribute.name}:</p>
+            <div className="swatch-attribute-wrapper">
+              {attribute?.items?.map((attribute: any, index: any)=> {return    <div key={index + attribute.id} onClick={() => {this.handleAttribute(attributeName, attribute.value)}} className={`border ${this.state.selectedAttribute[attributeName] === attribute.value ? "active" : ""}`}><div style={{background: attribute.value}} className={"swatch-attribute"} ></div></div>})}
+            </div>
+          </>)
+        }
+        return <></>
+      } );
+    return attribute
   }
   render() {
     return (
@@ -123,8 +154,7 @@ class CartProducts extends React.Component <ICartProducts, { selectedSize: strin
                       <p className={"brand"}>{cartProduct.product.brand}</p>
                       <p className={"name"}>{cartProduct.product.name}</p>
                       {this.handleCurrency(cartProduct.product)}
-                      {this.getProductSizes(cartProduct.product)}
-                      {this.getProductColors(cartProduct.product)}
+                      {this.getProductAttributes(cartProduct.product)}
                     </div>
                     <div className={"product-image-with-actions"}>
                     <div className={"cart-product-actions"}>
