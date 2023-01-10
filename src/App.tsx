@@ -3,7 +3,6 @@ import './App.scss';
 import AppHeader from "./components/Header";
 import Category from "./modules/Category";
 import {Routes, Route} from 'react-router-dom';
-import {getCategories} from "./GQL";
 import Product from "./modules/Product";
 import Cart from "./modules/Cart";
 

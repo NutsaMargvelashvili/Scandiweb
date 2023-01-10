@@ -8,21 +8,6 @@ const initialState = {
 };
 const reducer = (state: any = initialState, action: Action) => {
 
-  // switch (action.type){
-  //   case ActionTypes.ADD_CART_PRODUCT:
-  //     let newCartProducts: any[] = []
-  //     state.cartProducts.forEach((productArray:any, index:any)=>{
-  //       if(productArray[0] === action.payload) {
-  //         newCartProducts = state.cartProducts;
-  //         newCartProducts[index] = [...productArray, action.payload];
-  //          return false
-  //       }
-  //     })
-  //     let result = newCartProducts.length ?  [...newCartProducts] : [...state.cartProducts, [action.payload]]
-  //     return {
-  //       ...state,
-  //       cartProducts: result
-  //     };
   switch (action.type) {
     case ActionTypes.ADD_CART_PRODUCT:
       console.log(action.payload, "payloaddd")

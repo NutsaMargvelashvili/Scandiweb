@@ -9,6 +9,7 @@ import {State} from "../../state";
 import {connect} from "react-redux";
 import {addCartProduct, removeCartProduct, selectCategory, selectCurrency} from "../../state/action-creators";
 import CartProducts from "../CartProducts";
+import {withRouter} from "../../withRouter";
 
 
 interface IHeader {
@@ -38,6 +39,11 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
       cartProductsCounts: 0,
       productsCount: 0
     };
+  }
+  public navigation  = (route: any) =>
+  {
+    // @ts-ignore
+    this.props.navigate(route)
   }
 
   handleCategory(category: any) {
@@ -96,7 +102,8 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
       }
 
       if (currentLocation === "" || !urlMatch) {
-        window.history.pushState(null, "", this.state.categories[0].name)
+        this.navigation(this.state.categories[0].name)
+        // window.history.pushState(null, "", this.state.categories[0].name)
         this.handleCategory(this.state.categories[0].name)
       }
 
@@ -223,4 +230,4 @@ const mapDispatchToProps = (dispatch: any) => {
     },
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(AppHeader);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AppHeader));

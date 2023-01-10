@@ -5,18 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3000b4e9-76c7-4532-8630-a7ef8385102b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/withRouter.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Attributes/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Attributes/index.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Attributes/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Attributes/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/CartProducts/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/CartProducts/index.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/CartProducts/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/CartProducts/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Header/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/modules/Category/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/Category/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/modules/Product/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/Product/index.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/modules/Product/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/Product/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/react-app-env.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/react-app-env.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/state/reducers/cartReducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/state/reducers/cartReducer.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,7 +19,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="33779" />
+    <option name="totalTimeSeconds" value="36024" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -99,7 +93,7 @@
       <workItem from="1673184819027" duration="10175000" />
       <workItem from="1673269244952" duration="35336000" />
       <workItem from="1673366192776" duration="11889000" />
-      <workItem from="1673378782486" duration="5069000" />
+      <workItem from="1673378782486" duration="7467000" />
     </task>
     <servers />
   </component>

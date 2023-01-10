@@ -9,7 +9,6 @@ import {connect} from "react-redux";
 interface ICategory  extends HistoryRouterProps{
   currency: any;
   category: any;
-  // cartDrawerOpen: boolean;
 }
 
 class Category extends React.Component<ICategory, { categoryName: string, products: any, amount: number, location: any, currentPath: any }> {

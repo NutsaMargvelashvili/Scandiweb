@@ -73,7 +73,7 @@ class Product extends React.Component<IProduct, { selectedImage: number, selecte
           <Attributes setSelectedAttribute={this.handleAttribute} selectedAttribute={this.state.selectedAttribute} product={this.state.selectedProduct}/>
           <p className={"caption"}>price:</p>
           {this.handleCurrency()}
-          <button disabled={!this.state.selectedProduct.inStock} onClick={() => {
+          <button style={{cursor: !this.state.selectedProduct.inStock? "default": "pointer" }} disabled={!this.state.selectedProduct.inStock} onClick={() => {
             console.log(this.state.selectedAttribute, "selected attribute")
             this.props.addCartProduct({...this.state.selectedProduct, selectedAttributes : this.state.selectedAttribute},)
           }} className={"add-cart-btn"}>Add to cart
