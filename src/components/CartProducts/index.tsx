@@ -21,165 +21,176 @@ interface ICartProducts {
   currency: any;
 }
 
-class CartProducts extends React.Component <ICartProducts, {selectedAttribute: any, categories: any, currencyDrawer: boolean, cartDrawer: boolean, currencies: any, cartProductsCounts: number, productsCount: number, productsTotalPrice: any}> {
+class CartProducts extends React.Component <ICartProducts, { selectedAttribute: any, categories: any, currencyDrawer: boolean, cartDrawer: boolean, currencies: any, cartProductsCounts: number, productsCount: number, productsTotalPrice: any }> {
   constructor(props: any) {
     super(props);
 
     // Initializing the state
-    this.state = {selectedAttribute: {}, categories: [], currencyDrawer: false, cartDrawer: false, currencies: [], cartProductsCounts: 0, productsCount: 0, productsTotalPrice: {price: 0, symbol: this.props.currency.symbol}};
+    this.state = {
+      selectedAttribute: {},
+      categories: [],
+      currencyDrawer: false,
+      cartDrawer: false,
+      currencies: [],
+      cartProductsCounts: 0,
+      productsCount: 0,
+      productsTotalPrice: {price: 0, symbol: this.props.currency.symbol}
+    };
   }
 
   componentDidMount() {
     this.getCategories()
     this.getCurrencies()
-    if (this.props.cartProducts){
+    if (this.props.cartProducts) {
       this.countCartProducts()
       this.countCartProductsPrice()
     }
   }
 
-  getCategories(){
+  getCategories() {
     getCategories().then((value) => {
       this.setState({categories: value});
-      // return Promise.reject("oh, no!");
     })
       .catch((e) => {
-        console.error(e); // "oh, no!"
+        console.error(e);
       })
   }
-  getCurrencies(){
+
+  getCurrencies() {
     getCurrencies().then((value) => {
       this.setState({currencies: value});
-      // return Promise.reject("oh, no!");
     })
       .catch((e) => {
-        console.error(e); // "oh, no!"
+        console.error(e);
       })
   }
 
   componentDidUpdate(prevProps: any, prevState: { categories: number; }) {
-    if(this.props.cartProducts !== prevProps.cartProducts){
+    if (this.props.cartProducts !== prevProps.cartProducts) {
       console.log("cartProducts have changed")
       this.countCartProducts()
       this.countCartProductsPrice()
     }
-    if(this.props.currency !== prevProps.currency){
+    if (this.props.currency !== prevProps.currency) {
       this.countCartProductsPrice()
     }
   }
-  countCartProductsPrice(){
+
+  countCartProductsPrice() {
     let totalPrice = 0;
-    this.props.cartProducts && Object.values(this.props.cartProducts).forEach((cartProduct: any)=> {
-      totalPrice = totalPrice + cartProduct.product.prices.find((price:any)=>
-      {return price.currency.label === this.props.currency?.label}).amount * cartProduct.count
+    this.props.cartProducts && Object.values(this.props.cartProducts).forEach((cartProduct: any) => {
+      totalPrice = totalPrice + cartProduct.product.prices.find((price: any) => {
+        return price.currency.label === this.props.currency?.label
+      }).amount * cartProduct.count
     })
-    this.props.countCartProductsPrice({symbol: this.props.currency?.symbol, label: this.props.currency?.label, amount: parseFloat(totalPrice.toFixed(2))})
-    // this.setState({productsTotalPrice: {symbol: this.props.currency?.symbol, amount: parseFloat(totalPrice.toFixed(2))}})
+    this.props.countCartProductsPrice({
+      symbol: this.props.currency?.symbol,
+      label: this.props.currency?.label,
+      amount: parseFloat(totalPrice.toFixed(2))
+    })
   }
-  countCartProducts(){
+
+  countCartProducts() {
     let count = 0;
-    this.props.cartProducts && Object.values(this.props.cartProducts).forEach((cartProduct: any)=> count = count + cartProduct.count)
+    this.props.cartProducts && Object.values(this.props.cartProducts).forEach((cartProduct: any) => count = count + cartProduct.count)
     this.props.countCartProducts(count)
     this.setState({productsCount: count})
   }
-  handleCurrency(product: any){
+
+  handleCurrency(product: any) {
     let curr;
-    if(product.prices){
-      curr = product.prices.find((price:any)=> {return price.currency.label === this.props.currency?.label});
+    if (product.prices) {
+      curr = product.prices.find((price: any) => {
+        return price.currency.label === this.props.currency?.label
+      });
     }
-    return   (<p className={"price"}>{curr && (curr.currency.symbol + curr.amount)}</p>)
+    return (<p className={"price"}>{curr && (curr.currency.symbol + curr.amount)}</p>)
   }
 
-  // getProductSizes(product: any){
-  //   let sizes;
-  //   if(product.attributes){
-  //     sizes = product.attributes.find((attributeName:any)=> {return attributeName.name === "Size"});
-  //   }
-  //   return sizes?.items ?  <><p className={"caption"}>{sizes?.name}:</p>
-  //     <div className="size-wrapper">
-  //       {sizes?.items?.map((size: any, index: any)=> {return <div key={index + size.id} onClick={() => {this.setState({selectedSize: size.value})}} className={`size ${this.state.selectedSize === size.value ? "active" : ""}`}>{size.value}</div>})}
-  //     </div></> : ""
-  // }
-  // getProductColors(product: any){
-  //   let colors;
-  //
-  //   if(product.attributes){
-  //     colors = product.attributes.find((attributeName:any)=> {return attributeName.name === "Color"});
-  //   }
-  //   return colors?.items ?  <><p className={"caption"}>{colors?.name}:</p>
-  //     <div className="color-wrapper">
-  //       {colors?.items?.map((color: any, index: any)=> {return    <div key={index + color.id} onClick={() => {this.setState({selectedColor: color.value})}} className={`border ${this.state.selectedColor === color.value ? "active" : ""}`}><div style={{background: color.value}} className={"color"} ></div></div>})}
-  //     </div>
-  //   </> : ""
-  // }
-  handleAttribute(name: string, value:any){
+  handleAttribute(name: string, value: any) {
     let attribute: any = this.state.selectedAttribute;
     attribute[name] = value;
     this.setState({selectedAttribute: attribute})
-    console.log(this.state.selectedAttribute, "selected attribute")
   }
-  getProductAttributes(selectedProduct: any){
+
+  getProductAttributes(selectedProduct: any) {
     let attribute;
-    if(selectedProduct.attributes)
-      attribute = selectedProduct.attributes.map((attribute:any)=>{
-        if(attribute.type === "text") {
+    if (selectedProduct.attributes)
+      attribute = selectedProduct.attributes.map((attribute: any) => {
+        if (attribute.type === "text") {
           let attributeName = attribute.name;
-          return ( <><p className={"caption"}>{attribute.name}:</p>
+          return (<><p className={"caption"}>{attribute.name}:</p>
             <div className={`text-attribute-wrapper ${attribute.name === "Capacity" ? "rectangle" : ""}`}>
-              {attribute?.items?.map((attribute: any, index: any)=>
-                <div key={index + attribute.id} onClick={() => {this.handleAttribute(attributeName, attribute.value)}} className={`text-attribute ${this.state.selectedAttribute[attributeName] === attribute.value ? "active" : ""}`}>{attribute.value}</div>)}
+              {attribute?.items?.map((attribute: any, index: any) =>
+                <div key={index + attribute.id} onClick={() => {
+                  this.handleAttribute(attributeName, attribute.value)
+                }}
+                     className={`text-attribute ${this.state.selectedAttribute[attributeName] === attribute.value ? "active" : ""}`}>{attribute.value}</div>)}
             </div>
           </>)
-        }
-        else if(attribute.type === "swatch"){
+        } else if (attribute.type === "swatch") {
           let attributeName = attribute.name;
-          return ( <><p className={"caption"}>{attribute.name}:</p>
+          return (<><p className={"caption"}>{attribute.name}:</p>
             <div className="swatch-attribute-wrapper">
-              {attribute?.items?.map((attribute: any, index: any)=> {return    <div key={index + attribute.id} onClick={() => {this.handleAttribute(attributeName, attribute.value)}} className={`border ${this.state.selectedAttribute[attributeName] === attribute.value ? "active" : ""}`}><div style={{background: attribute.value}} className={"swatch-attribute"} ></div></div>})}
+              {attribute?.items?.map((attribute: any, index: any) => {
+                return <div key={index + attribute.id} onClick={() => {
+                  this.handleAttribute(attributeName, attribute.value)
+                }}
+                            className={`border ${this.state.selectedAttribute[attributeName] === attribute.value ? "active" : ""}`}>
+                  <div style={{background: attribute.value}} className={"swatch-attribute"}></div>
+                </div>
+              })}
             </div>
           </>)
         }
         return <></>
-      } );
+      });
     return attribute
   }
+
   render() {
     return (
       <>
-                {this.props.cartProducts ? Object.values(this.props.cartProducts).map((cartProduct: any, index: any)=>{
-                  return (
-                    <>
-                    <div key={index+cartProduct.id} className={`cart-product-wrapper ${this.props.big ? "big" : ""}`}>
-                    <div className="cart-product-info">
-                      <p className={"brand"}>{cartProduct.product.brand}</p>
-                      <p className={"name"}>{cartProduct.product.name}</p>
-                      {this.handleCurrency(cartProduct.product)}
-                      {this.getProductAttributes(cartProduct.product)}
-                    </div>
-                    <div className={"product-image-with-actions"}>
-                    <div className={"cart-product-actions"}>
-                      <button onClick={() => {this.props.removeCartProduct(cartProduct.product)}}>-</button>
-                      <span>{cartProduct.count}</span>
-                      <button onClick={() => {this.props.addCartProduct(cartProduct.product)}}>+</button>
-                    </div>
-                    <img src={cartProduct.product.gallery[0]} alt={cartProduct.product.id} />
-                    </div>
+        {this.props.cartProducts ? Object.values(this.props.cartProducts).map((cartProduct: any, index: any) => {
+          return (
+            <>
+              <div key={index + cartProduct.id} className={`cart-product-wrapper ${this.props.big ? "big" : ""}`}>
+                <div className="cart-product-info">
+                  <p className={"brand"}>{cartProduct.product.brand}</p>
+                  <p className={"name"}>{cartProduct.product.name}</p>
+                  {this.handleCurrency(cartProduct.product)}
+                  {this.getProductAttributes(cartProduct.product)}
+                </div>
+                <div className={"product-image-with-actions"}>
+                  <div className={"cart-product-actions"}>
+                    <button onClick={() => {
+                      this.props.removeCartProduct(cartProduct.product)
+                    }}>-
+                    </button>
+                    <span>{cartProduct.count}</span>
+                    <button onClick={() => {
+                      this.props.addCartProduct(cartProduct.product)
+                    }}>+
+                    </button>
                   </div>
-                      {this.props.big && <hr className={"separator"}/>}
-                    </>)
-                }) : "" }
+                  <img src={cartProduct.product.gallery[0]} alt={cartProduct.product.id}/>
+                </div>
+              </div>
+              {this.props.big && <hr className={"separator"}/>}
+            </>)
+        }) : ""}
       </>
     );
   }
 };
 
 const mapStateToProps = (state: State) => {
-  return{
+  return {
     cartProducts: state.cart.cartProducts,
     currency: state.products.currency
   }
 }
-const mapDispatchToProps = (dispatch:any) => {
+const mapDispatchToProps = (dispatch: any) => {
   return {
     addCartProduct: (product: {}) => {
       dispatch(addCartProduct(product))

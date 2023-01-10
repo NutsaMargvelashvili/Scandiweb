@@ -1,6 +1,7 @@
-.cart-wrapper{
-padding: 80px 100px;
-  .caption{
+.cart-wrapper {
+  padding: 80px 100px;
+
+  .caption {
     font-family: Raleway, sans-serif;
     font-size: 32px;
     font-weight: 700;
@@ -10,30 +11,36 @@ padding: 80px 100px;
     color: #1D1F22;
     margin: 0 0 55px;
   }
-  .total{
+
+  .total {
     text-align: left;
     padding: 24px 0;
-    .tax, .quantity{
+
+    .tax, .quantity {
       font-family: Raleway, sans-serif;
       font-size: 24px;
       font-weight: 400;
       line-height: 28px;
       margin: 8px 0 0;
+
       span {
-       font-weight: 700;
-     }
+        font-weight: 700;
+      }
     }
-    .price{
+
+    .price {
       font-family: Raleway, sans-serif;
       font-size: 24px;
       font-weight: 500;
       line-height: 28px;
       margin: 8px 0 0;
+
       span {
         font-weight: 700;
       }
     }
-    button.order{
+
+    button.order {
       background: #5ECE7B;
       color: #FFF;
       border: none;

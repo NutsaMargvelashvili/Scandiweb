@@ -5,13 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3000b4e9-76c7-4532-8630-a7ef8385102b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/prettier.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/CartProducts/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/CartProducts/index.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/CartProducts/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/CartProducts/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Header/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/index.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Header/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/Cart/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/Cart/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/Cart/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/Cart/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/Category/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/Category/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/Category/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/Category/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/modules/Product/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/Product/index.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/modules/Product/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/Product/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/state/action-creators/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/state/action-creators/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/state/actions/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/state/actions/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/state/reducers/cartReducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/state/reducers/cartReducer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/state/reducers/productsReducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/state/reducers/productsReducer.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,7 +31,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="16595" />
+    <option name="totalTimeSeconds" value="17979" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -44,7 +56,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "settings.javascript.prettier",
     "ts.external.directory.path": "/home/newuser/Desktop/scandiweb/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
@@ -84,7 +96,7 @@
       <workItem from="1673048202311" duration="37043000" />
       <workItem from="1673119781450" duration="19900000" />
       <workItem from="1673184819027" duration="10175000" />
-      <workItem from="1673269244952" duration="33873000" />
+      <workItem from="1673269244952" duration="35336000" />
     </task>
     <servers />
   </component>

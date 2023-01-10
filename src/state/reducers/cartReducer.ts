@@ -6,7 +6,7 @@ const initialState = {
   count: 0,
   price: {symbol: "", label: "", amount: 0}
 };
-const reducer = (state: any = initialState, action: Action) =>{
+const reducer = (state: any = initialState, action: Action) => {
 
   // switch (action.type){
   //   case ActionTypes.ADD_CART_PRODUCT:
@@ -23,68 +23,59 @@ const reducer = (state: any = initialState, action: Action) =>{
   //       ...state,
   //       cartProducts: result
   //     };
-  switch (action.type){
+  switch (action.type) {
     case ActionTypes.ADD_CART_PRODUCT:
 
-      if(state.cartProducts[action.payload.id]){
+      if (state.cartProducts[action.payload.id]) {
         let newCartProducts: any = {};
         newCartProducts = state.cartProducts;
         newCartProducts[action.payload.id].count = ++newCartProducts[action.payload.id].count
 
-        return{
+        return {
           ...state,
-          cartProducts:  {...newCartProducts},
-          // count: ++state.count
+          cartProducts: {...newCartProducts},
         }
-      }
-      else{
+      } else {
         let newCartProduct: any = {};
         newCartProduct[action.payload.id] = {product: action.payload, count: 1}
 
-        return{
+        return {
           ...state,
-          cartProducts:  {...state.cartProducts, ...newCartProduct},
-          // count: ++state.count
+          cartProducts: {...state.cartProducts, ...newCartProduct},
         }
       }
 
     case ActionTypes.REMOVE_CART_PRODUCT:
-    console.log("deleting...")
-      if(state.cartProducts[action.payload.id].count > 1){
+      console.log("deleting...")
+      if (state.cartProducts[action.payload.id].count > 1) {
         let newCartProducts: any = {};
         newCartProducts = state.cartProducts;
         newCartProducts[action.payload.id].count = --newCartProducts[action.payload.id].count
-        return{
+        return {
           ...state,
-          cartProducts:  {...newCartProducts},
+          cartProducts: {...newCartProducts},
         }
-      }
-      else{
+      } else {
         let newCartProducts: any = {};
         newCartProducts = Object.fromEntries(Object.entries(state.cartProducts).filter(([key]) => key !== action.payload.id));
-        return{
+        return {
           ...state,
-          cartProducts:  {...newCartProducts},
+          cartProducts: {...newCartProducts},
         }
       }
 
     case ActionTypes.COUNT_CART_PRODUCTS_PRICE:
-      return{
+      return {
         ...state,
-        price:  {symbol: action.payload.symbol, label: action.payload.label, amount: action.payload.amount},
+        price: {symbol: action.payload.symbol, label: action.payload.label, amount: action.payload.amount},
       }
 
     case ActionTypes.COUNT_CART_PRODUCTS:
-      return{
+      return {
         ...state,
-        count:  action.payload,
+        count: action.payload,
       }
-    // case ActionTypes.PRODUCTS_AMOUNT:
-    //   let counts: any = [];
-    //   state.cartProducts.forEach((x:any)=>{
-    //     counts[x] = (counts[x] || 0) + 1;
-    //   })
-    //   return state
+
     default:
       return state
   }

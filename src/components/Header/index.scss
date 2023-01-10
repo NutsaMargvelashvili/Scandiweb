@@ -1,18 +1,21 @@
-.app-header{
+.app-header {
   height: 78px;
   padding: 0 101px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
-  ul.Nav__item-wrapper{
+
+  ul.Nav__item-wrapper {
     list-style-type: none;
     display: flex;
     margin: 0;
     padding: 0;
-    li.Nav__item{
+
+    li.Nav__item {
       padding: 28px 16px 30px 16px;
-      .Nav__link{
+
+      .Nav__link {
         color: #1D1F22;
         text-transform: uppercase;
         font-family: Raleway, sans-serif;
@@ -23,61 +26,71 @@
         text-align: center;
         text-decoration: none;
       }
-      &.active{
+
+      &.active {
         border-bottom: 2px solid #5ECE7B;
-        .Nav__link{
+
+        .Nav__link {
           color: #5ECE7B;
           font-weight: 600;
         }
       }
     }
   }
-  .actions{
+
+  .actions {
     display: flex;
     align-items: center;
     width: 204px;
-    .currency-convertor{
+
+    .currency-convertor {
       display: flex;
       padding-left: 134px;
       align-items: center;
       margin-right: 22px;
       justify-content: center;
       position: relative;
-      .currency-drawer{
+
+      .currency-drawer {
         position: absolute;
         z-index: 4;
         top: 30px;
         width: 114px;
         box-shadow: 0 4px 35px rgba(168, 172, 176, 0.19);
-        .currency-list-items{
+
+        .currency-list-items {
           list-style-type: none;
           padding: 0;
           cursor: pointer;
-          .list-item{
+
+          .list-item {
             height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            &.active{
+
+            &.active {
               background: #EEEEEE;
             }
           }
         }
       }
-      .currency{
+
+      .currency {
         font-family: Raleway, sans-serif;
         margin-right: 10px;
         cursor: pointer;
       }
     }
 
-    .header-cart-wrapper{
+    .header-cart-wrapper {
       position: relative;
-      .cart{
+
+      .cart {
         position: relative;
-        //cursor: pointer;
-        .cart-product-amount{
+
+        .cart-product-amount {
           position: absolute;
           top: -12px;
           right: -12px;
@@ -96,72 +109,86 @@
         }
 
       }
-      .cart-drawer{
+
+      .cart-drawer {
         position: absolute;
         z-index: 4;
         background: #FFF;
         padding: 32px 16px;
         right: 0;
         width: 293px;
-        .bag-items-amount{
-          font-family: Raleway,sans-serif;
+
+        .bag-items-amount {
+          font-family: Raleway, sans-serif;
           font-size: 16px;
           line-height: 26px;
           letter-spacing: 0;
           text-align: left;
           margin: 32px 0;
-          &span:first-child{
+
+          &span:first-child {
             font-weight: 700;
           }
-          &span:nth-child(2){
+
+          &span:nth-child(2) {
             font-weight: 500;
           }
         }
-        .cart-btns{
+
+        .cart-btns {
           display: flex;
           justify-content: space-between;
-          .check-out-btn, .view-cart-btn{
+
+          .check-out-btn, .view-cart-btn {
             width: 140px;
             height: 43px;
-            font-family: Raleway,sans-serif;
+            font-family: Raleway, sans-serif;
             font-size: 14px;
             font-weight: 600;
             line-height: 17px;
             letter-spacing: 0;
             text-align: center;
-            .cart-link{
+
+            .cart-link {
               text-transform: uppercase;
               text-decoration: none;
             }
           }
-          .view-cart-btn{
+
+          .view-cart-btn {
             background: #FFF;
             border: 1px solid #1D1F22;
-            .cart-link{
+
+            .cart-link {
               color: #1D1F22;
             }
           }
-          .check-out-btn{
+
+          .check-out-btn {
             background: #5ECE7B;
             border: none;
-            .cart-link{
+
+            .cart-link {
               color: #FFF;
             }
           }
         }
-        .cart-products-total-price{
+
+        .cart-products-total-price {
           display: flex;
           justify-content: space-between;
           margin-bottom: 32px;
-          .total-price-caption{
+
+          .total-price-caption {
             font-family: Roboto, sans-serif;
             font-size: 16px;
             font-weight: 500;
             line-height: 18px;
             letter-spacing: 0;
           }
-          .total-price{
-            font-family: Raleway,sans-serif;
+
+          .total-price {
+            font-family: Raleway, sans-serif;
             font-size: 16px;
             font-weight: 700;
             line-height: 26px;
@@ -172,7 +199,8 @@
     }
   }
 }
-.shade{
+
+.shade {
   width: 100%;
   height: calc(100% - 78px);
   position: absolute;

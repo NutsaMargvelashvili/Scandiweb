@@ -1,14 +1,14 @@
-.cart-product-wrapper{
+.cart-product-wrapper {
   display: flex;
   justify-content: space-between;
-  //row-gap: 40px;
-  //margin-bottom: 40px;
   padding: 24px 0;
-  .cart-product-info{
+
+  .cart-product-info {
     width: 136px;
-    .brand, .name{
+
+    .brand, .name {
       margin: 0;
-      font-family: Raleway,sans-serif;
+      font-family: Raleway, sans-serif;
       font-size: 16px;
       font-weight: 300;
       line-height: 26px;
@@ -16,7 +16,8 @@
       text-align: left;
       color: #1D1F22;
     }
-    .price{
+
+    .price {
       font-family: Raleway, sans-serif;
       font-size: 16px;
       font-weight: 500;
@@ -26,7 +27,8 @@
       color: #1D1F22;
       margin: 4px 0 8px 0;
     }
-    .caption{
+
+    .caption {
       font-family: Raleway, sans-serif;
       font-size: 14px;
       font-weight: 400;
@@ -36,11 +38,13 @@
       color: #1D1F22;
       margin: 0 0 8px;
     }
-    .text-attribute-wrapper{
+
+    .text-attribute-wrapper {
       display: flex;
       column-gap: 8px;
       margin-bottom: 24px;
-      .text-attribute{
+
+      .text-attribute {
         height: 25px;
         min-width: 25px;
         border: 1px solid #1D1F22;
@@ -53,42 +57,51 @@
         line-height: 22px;
         letter-spacing: 0;
         cursor: pointer;
-        &.active{
+
+        &.active {
           background: black;
-          color:white;
+          color: white;
         }
       }
-      &.rectangle{
-        .text-attribute{
+
+      &.rectangle {
+        .text-attribute {
           width: 48px;
         }
       }
     }
-    .swatch-attribute-wrapper{
+
+    .swatch-attribute-wrapper {
       display: flex;
       column-gap: 8px;
       margin-bottom: 24px;
-      .border{
+
+      .border {
         border: 1px solid transparent;
         padding: 1px;
-        &.active{
+
+        &.active {
           border: 1px solid #5ECE7B !important;
         }
       }
-      .swatch-attribute{
+
+      .swatch-attribute {
         width: 16px;
         height: 16px;
       }
     }
   }
-  .product-image-with-actions{
+
+  .product-image-with-actions {
     display: flex;
     column-gap: 8px;
-    .cart-product-actions{
+
+    .cart-product-actions {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      button{
+
+      button {
         width: 24px;
         height: 24px;
         background: #FFF;
@@ -96,43 +109,51 @@
         color: #1D1F22;
       }
     }
-    img{
+
+    img {
       width: 121px;
       height: 190px;
       object-fit: cover;
     }
 
   }
-  &.big{
-    .cart-product-info{
+
+  &.big {
+    .cart-product-info {
       width: 292px;
-      .brand{
+
+      .brand {
         font-size: 30px;
         font-weight: 600;
         line-height: 27px;
         margin-bottom: 16px;
       }
-      .name{
+
+      .name {
         font-size: 30px;
         font-weight: 400;
         line-height: 27px;
         margin-bottom: 20px;
       }
-      .price{
+
+      .price {
         font-size: 24px;
         font-weight: 700;
         line-height: 24px;
         margin-bottom: 20px;
       }
-      .caption{
+
+      .caption {
         font-family: Roboto Condensed, sans-serif;
         font-size: 18px;
         font-weight: 700;
         line-height: 18px;
       }
-      .size-wrapper{
+
+      .size-wrapper {
         margin-bottom: 16px;
-        .size{
+
+        .size {
           height: 45px;
           width: 63px;
           font-size: 16px;
@@ -141,29 +162,35 @@
           letter-spacing: 0.05em;
         }
       }
-      .color-wrapper{
+
+      .color-wrapper {
         column-gap: 8px;
-        .color{
+
+        .color {
           width: 32px;
           height: 32px;
         }
       }
     }
-    .product-image-with-actions{
+
+    .product-image-with-actions {
       column-gap: 24px;
-      img{
+
+      img {
         height: 288px;
         width: 200px;
         object-fit: cover;
       }
-      button{
+
+      button {
         width: 45px;
         height: 45px;
       }
     }
+  }
 }
-}
-.separator{
+
+.separator {
   border: 1px solid #E5E5E5;
   margin: 0;
 }

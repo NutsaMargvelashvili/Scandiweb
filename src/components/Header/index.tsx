@@ -23,70 +23,76 @@ interface IHeader {
   selectCategory: any;
 }
 
-class AppHeader extends React.Component <IHeader, { selectedSize: string, selectedColor: string, categories: any, currencyDrawer: boolean, cartDrawer: boolean, currencies: any, cartProductsCounts: number, productsCount: number}> {
+class AppHeader extends React.Component <IHeader, { selectedSize: string, selectedColor: string, categories: any, currencyDrawer: boolean, cartDrawer: boolean, currencies: any, cartProductsCounts: number, productsCount: number }> {
   constructor(props: any) {
     super(props);
 
     // Initializing the state
-    this.state = {selectedSize: "S", selectedColor: "#D3D2D5", categories: [], currencyDrawer: false, cartDrawer: false, currencies: [], cartProductsCounts: 0, productsCount: 0};
+    this.state = {
+      selectedSize: "S",
+      selectedColor: "#D3D2D5",
+      categories: [],
+      currencyDrawer: false,
+      cartDrawer: false,
+      currencies: [],
+      cartProductsCounts: 0,
+      productsCount: 0
+    };
   }
 
-  handleCategory(category: any){
+  handleCategory(category: any) {
     this.props.selectCategory(category)
   }
 
-  handleCurrency(currency: any){
+  handleCurrency(currency: any) {
     this.props.selectCurrency({symbol: currency.symbol, label: currency.label})
   }
 
   componentDidMount() {
     this.getCategories()
     this.getCurrencies()
-    // this.handleCategory(window.location.pathname.split('/')[1])
-    if (this.props.cartProducts){
+    if (this.props.cartProducts) {
       this.countCartProducts()
     }
   }
 
-  getCategories(){
+  getCategories() {
     getCategories().then((value) => {
       this.setState({categories: value});
-      // return Promise.reject("oh, no!");
     })
       .catch((e) => {
-        console.error(e); // "oh, no!"
+        console.error(e);
       })
   }
-  getCurrencies(){
+
+  getCurrencies() {
     getCurrencies().then((value) => {
       this.setState({currencies: value});
-      // return Promise.reject("oh, no!");
     })
       .catch((e) => {
-        console.error(e); // "oh, no!"
+        console.error(e);
       })
   }
 
   componentDidUpdate(prevProps: any, prevState: { currencies: any, categories: any }) {
-    if(this.props.cartProducts !== prevProps.cartProducts){
+    if (this.props.cartProducts !== prevProps.cartProducts) {
       this.countCartProducts()
     }
-    if(this.state.currencies !== prevState.currencies){
+    if (this.state.currencies !== prevState.currencies) {
       this.handleCurrency({symbol: this.state.currencies[0].symbol, label: this.state.currencies[0].label})
     }
-    if(this.state.categories !== prevState.categories){
-      // console.log((window.location.pathname.split('/')[1] === "") ? this.state.categories[0].name : window.location.pathname.split('/')[1], "wtf");
+    if (this.state.categories !== prevState.categories) {
       let urlMatch = false;
-      if(window.location.pathname.split('/')[1] !== ""){
+      if (window.location.pathname.split('/')[1] !== "") {
         this.state.categories.forEach((category: any) => {
-          if(category.name === window.location.pathname.split('/')[1]){
+          if (category.name === window.location.pathname.split('/')[1]) {
             this.handleCategory(window.location.pathname.split('/')[1])
             urlMatch = true;
             return;
           }
         })
       }
-      if(window.location.pathname.split('/')[1] === "" || !urlMatch){
+      if (window.location.pathname.split('/')[1] === "" || !urlMatch) {
         console.log("entered")
         window.history.pushState(null, "", this.state.categories[0].name)
         this.handleCategory(this.state.categories[0].name)
@@ -94,23 +100,29 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
 
     }
   }
-  countCartProducts(){
+
+  countCartProducts() {
     let count = 0;
-    this.props.cartProducts && Object.values(this.props.cartProducts).forEach((cartProduct: any)=> count = count + cartProduct.count)
+    this.props.cartProducts && Object.values(this.props.cartProducts).forEach((cartProduct: any) => count = count + cartProduct.count)
     this.setState({productsCount: count})
   }
+
   getCategoriesHtml() {
     return this.state.categories && this.state.categories[0] ? (this.state.categories.map((category: any, index: any) => (
-      <li  key={index + category.name}  className={`Nav__item ${this.props.category === category.name ? "active" : ""}`}>
-        <Link onClick={() => {this.handleCategory(category.name)}} className="Nav__link" to={category.name}>{category.name}</Link>
+      <li key={index + category.name} className={`Nav__item ${this.props.category === category.name ? "active" : ""}`}>
+        <Link onClick={() => {
+          this.handleCategory(category.name)
+        }} className="Nav__link" to={category.name}>{category.name}</Link>
       </li>
     ))) : ""
   }
 
-  getCurrenciesHtml(){
-    return this.state.currencies ? this.state.currencies.map((currency: any, index: any)=>
-        <li key={index + currency.label} onClick={() => {this.handleCurrency(currency)}}
-            className={`list-item ${this.props.currency.label === currency.label ? "active" : ""}`}>{`${currency.symbol} ${currency.label}`}</li>) : ""
+  getCurrenciesHtml() {
+    return this.state.currencies ? this.state.currencies.map((currency: any, index: any) =>
+      <li key={index + currency.label} onClick={() => {
+        this.handleCurrency(currency)
+      }}
+          className={`list-item ${this.props.currency.label === currency.label ? "active" : ""}`}>{`${currency.symbol} ${currency.label}`}</li>) : ""
   }
 
   render() {
@@ -119,60 +131,65 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
 
     return (
       <>
-      <div className="app-header">
-        <nav className="Nav">
-          <ul className="Nav__item-wrapper">
-            {categories}
-          </ul>
-        </nav>
-        <div className="logo-wrapper">
-          <Link onClick={()=>{this.handleCategory(this.state.categories[0]?.name)}} to={`/${this.state.categories[0]?.name}`} className="brand">
-            <img src={Logo} alt={"logo"} className="logo"/>
-          </Link>
+        <div className="app-header">
+          <nav className="Nav">
+            <ul className="Nav__item-wrapper">
+              {categories}
+            </ul>
+          </nav>
+          <div className="logo-wrapper">
+            <Link onClick={() => {
+              this.handleCategory(this.state.categories[0]?.name)
+            }} to={`/${this.state.categories[0]?.name}`} className="brand">
+              <img src={Logo} alt={"logo"} className="logo"/>
+            </Link>
+          </div>
+          <div className="actions">
+            <div className="currency-convertor"
+                 onClick={() => this.setState({currencyDrawer: !this.state.currencyDrawer, cartDrawer: false})}>
+              <span className={"currency"}>{this.props.currency?.symbol}</span>
+              <img className={"arrow-icon"} alt={"arrow"} src={Arrow}/>
+              {this.state.currencyDrawer && (<div className="currency-drawer">
+                <ul className="currency-list-items">
+                  {currencies}
+                </ul>
+              </div>)}
+            </div>
+            <div className="header-cart-wrapper">
+              <div className="cart" onClick={() => {
+                this.setState({cartDrawer: !this.state.cartDrawer, currencyDrawer: false});
+              }}>
+                <img className={"cart-icon"} alt={"cart"} src={Cart}/>
+                <div className="cart-product-amount">{this.state.productsCount}</div>
+              </div>
+              {this.state.cartDrawer && (<div className="cart-drawer">
+                <div className={"bag-items-amount"}>
+                  <span>My Bag, </span>
+                  <span>{this.state.productsCount} {this.state.productsCount > 1 ? "items" : "item"}</span>
+                </div>
+                <CartProducts big={false}/>
+                <div className="cart-products-total-price">
+                  <span className={"total-price-caption"}>Total</span>
+                  <span className={"total-price"}>{this.props.price.symbol} {this.props.price.amount}</span>
+                </div>
+                <div className="cart-btns">
+                  <button className={"view-cart-btn"}><Link onClick={() => this.setState({cartDrawer: false})}
+                                                            className="cart-link" to={"/cart"}>View bag</Link></button>
+                  <button className={"check-out-btn"}><Link className="cart-link" to={"/cart"}>Check out</Link></button>
+                </div>
+              </div>)
+              }
+            </div>
+          </div>
         </div>
-        <div className="actions">
-          <div className="currency-convertor"
-               onClick={() => this.setState({currencyDrawer: !this.state.currencyDrawer, cartDrawer: false})}>
-            <span className={"currency"}>{this.props.currency?.symbol}</span>
-            <img className={"arrow-icon"} alt={"arrow"} src={Arrow}/>
-            {this.state.currencyDrawer && (<div className="currency-drawer">
-              <ul className="currency-list-items">
-                {currencies}
-              </ul>
-            </div>)}
-          </div>
-          <div className="header-cart-wrapper">
-          <div className="cart" onClick={() => { this.setState({cartDrawer: !this.state.cartDrawer, currencyDrawer: false}); }}>
-            <img className={"cart-icon"} alt={"cart"} src={Cart}/>
-            <div className="cart-product-amount">{this.state.productsCount}</div>
-          </div>
-            {this.state.cartDrawer && (<div className="cart-drawer">
-              <div className={"bag-items-amount"}>
-                <span>My Bag, </span>
-                <span>{this.state.productsCount} {this.state.productsCount > 1 ? "items" : "item"}</span>
-              </div>
-              <CartProducts big={false} />
-              <div className="cart-products-total-price">
-                <span className={"total-price-caption"}>Total</span>
-                <span className={"total-price"}>{this.props.price.symbol} {this.props.price.amount}</span>
-              </div>
-              <div className="cart-btns">
-                <button className={"view-cart-btn"}><Link onClick={()=>this.setState({cartDrawer: false})} className="cart-link" to={"/cart"}>View bag</Link></button>
-                <button className={"check-out-btn"}><Link className="cart-link" to={"/cart"}>Check out</Link></button>
-              </div>
-            </div>)
-            }
-          </div>
-        </div>
-      </div>
-    {this.state.cartDrawer && <div onClick={()=>this.setState({cartDrawer: false})} className="shade"></div>}
-    </>
+        {this.state.cartDrawer && <div onClick={() => this.setState({cartDrawer: false})} className="shade"></div>}
+      </>
     );
   }
 };
 
 const mapStateToProps = (state: State) => {
-  return{
+  return {
     cartProducts: state.cart.cartProducts,
     price: state.cart.price,
     count: state.cart.count,
@@ -180,7 +197,7 @@ const mapStateToProps = (state: State) => {
     category: state.products.category
   }
 }
-const mapDispatchToProps = (dispatch:any) => {
+const mapDispatchToProps = (dispatch: any) => {
   return {
     addCartProduct: (product: {}) => {
       dispatch(addCartProduct(product))

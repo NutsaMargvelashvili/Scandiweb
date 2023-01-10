@@ -5,19 +5,19 @@ const initialState = {
   currency: {symbol: "", label: ""},
   category: ""
 };
-const reducer = (state: any = initialState, action: Action) =>{
+const reducer = (state: any = initialState, action: Action) => {
 
-  switch (action.type){
+  switch (action.type) {
 
     case ActionTypes.SELECT_CURRENCY:
-      return{
+      return {
         ...state,
-        currency:  action.payload,
+        currency: action.payload,
       }
     case ActionTypes.SELECT_CATEGORY:
-      return{
+      return {
         ...state,
-        category:  action.payload,
+        category: action.payload,
       }
     default:
       return state
