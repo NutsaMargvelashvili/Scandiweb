@@ -9,6 +9,7 @@ import {
   countCartProductsPrice,
   removeCartProduct
 } from "../../state/action-creators";
+import Attributes from "../Attributes";
 
 
 interface ICartProducts {
@@ -150,7 +151,7 @@ class CartProducts extends React.Component <ICartProducts, { selectedAttribute: 
 
   render() {
     return (
-      <>
+      <div className={"cart-products-wrapper"}>
         {this.props.cartProducts ? Object.values(this.props.cartProducts).map((cartProduct: any, index: any) => {
           return (
             <>
@@ -159,7 +160,8 @@ class CartProducts extends React.Component <ICartProducts, { selectedAttribute: 
                   <p className={"brand"}>{cartProduct.product.brand}</p>
                   <p className={"name"}>{cartProduct.product.name}</p>
                   {this.handleCurrency(cartProduct.product)}
-                  {this.getProductAttributes(cartProduct.product)}
+                  {/*{this.getProductAttributes(cartProduct.product)}*/}
+                  <Attributes inCart product={cartProduct.product}/>
                 </div>
                 <div className={"product-image-with-actions"}>
                   <div className={"cart-product-actions"}>
@@ -179,7 +181,7 @@ class CartProducts extends React.Component <ICartProducts, { selectedAttribute: 
               {this.props.big && <hr className={"separator"}/>}
             </>)
         }) : ""}
-      </>
+      </div>
     );
   }
 };

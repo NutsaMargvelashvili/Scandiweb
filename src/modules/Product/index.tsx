@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {State} from "../../state";
 import {addCartProduct} from "../../state/action-creators";
 import {getProductByID} from "../../GQL";
+import Attributes from "../../components/Attributes";
 
 interface IProduct {
   cartProducts: [];
@@ -11,12 +12,12 @@ interface IProduct {
   addCartProduct: any;
 }
 
-class Product extends React.Component<IProduct, { selectedImage: number, selectedProduct: any, selectedAttribute: any }> {
+class Product extends React.Component<IProduct, { selectedImage: number, selectedProduct: any}> {
   public product = [];
 
   constructor(props: any) {
     super(props);
-    this.state = {selectedImage: 0, selectedProduct: [], selectedAttribute: {}};
+    this.state = {selectedImage: 0, selectedProduct: []};
 
   }
 
@@ -31,49 +32,6 @@ class Product extends React.Component<IProduct, { selectedImage: number, selecte
       .catch((e) => {
         console.error(e);
       })
-  }
-
-  handleAttribute(name: string, value: any) {
-    let attribute: any = this.state.selectedAttribute;
-    attribute[name] = value;
-    this.setState({selectedAttribute: attribute})
-    console.log(this.state.selectedAttribute, "selected attribute")
-  }
-
-  getProductAttributes() {
-    let attribute;
-
-    if (this.state.selectedProduct.attributes)
-      attribute = this.state.selectedProduct.attributes.map((attribute: any) => {
-        if (attribute.type === "text") {
-          let attributeName = attribute.name;
-          return (<><p className={"caption"}>{attribute.name}:</p>
-            <div className="text-attribute-wrapper">
-              {attribute?.items?.map((attribute: any, index: any) =>
-                <div key={index + attribute.id} onClick={() => {
-                  this.handleAttribute(attributeName, attribute.value)
-                }}
-                     className={`text-attribute ${this.state.selectedAttribute[attributeName] === attribute.value ? "active" : ""}`}>{attribute.value}</div>)}
-            </div>
-          </>)
-        } else if (attribute.type === "swatch") {
-          let attributeName = attribute.name;
-          return (<><p className={"caption"}>{attribute.name}:</p>
-            <div className="swatch-attribute-wrapper">
-              {attribute?.items?.map((attribute: any, index: any) => {
-                return <div key={index + attribute.id} onClick={() => {
-                  this.handleAttribute(attributeName, attribute.value)
-                }}
-                            className={`border ${this.state.selectedAttribute[attributeName] === attribute.value ? "active" : ""}`}>
-                  <div style={{background: attribute.value}} className={"swatch-attribute"}></div>
-                </div>
-              })}
-            </div>
-          </>)
-        }
-        return <></>
-      });
-    return attribute
   }
 
   handleCurrency() {
@@ -96,7 +54,6 @@ class Product extends React.Component<IProduct, { selectedImage: number, selecte
 
   render() {
     let product = this.getProductHtml()
-    let productAttributes = this.getProductAttributes()
     return (
       <div className="product-wrapper">
         <div className="gallery">
@@ -109,10 +66,10 @@ class Product extends React.Component<IProduct, { selectedImage: number, selecte
         <div className="product-info">
           <p className={"brand"}>{this.state.selectedProduct.brand}</p>
           <p className={"name"}>{this.state.selectedProduct.name}</p>
-          {productAttributes}
+          <Attributes product={this.state.selectedProduct}/>
           <p className={"caption"}>price:</p>
           {this.handleCurrency()}
-          <button onClick={() => {
+          <button disabled={!this.state.selectedProduct.inStock} onClick={() => {
             this.props.addCartProduct(this.state.selectedProduct)
           }} className={"add-cart-btn"}>Add to cart
           </button>
