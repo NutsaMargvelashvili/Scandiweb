@@ -1,13 +1,12 @@
 ﻿import "./index.scss";
 import React from "react";
 import {getProductsByCategory} from "../../GQL";
-
+import { HistoryRouterProps } from "react-router-dom";
+import {withRouter} from '../../withRouter';
 import {State} from "../../state";
 import {connect} from "react-redux";
 
-interface ICategory {
-  selectedProduct: [];
-  productCallback: any;
+interface ICategory  extends HistoryRouterProps{
   currency: any;
   category: any;
   // cartDrawerOpen: boolean;
@@ -23,14 +22,15 @@ class Category extends React.Component<ICategory, { categoryName: string, produc
       location: window.location.pathname.split('/')[1],
       currentPath: window.location.pathname.split('/')[1]
     };
-    this.handleCurrency = this.handleCurrency.bind(this);
-
-    window.onbeforeunload = () => {
-      this.setState({currentPath: window.location.pathname.split('/')[1]})
-    };
   }
 
-  handleCurrency(product: any) {
+  public navigation  = (route: any) =>
+  {
+    // @ts-ignore
+    this.props.navigate(route)
+  }
+
+  public handleCurrency = (product: any) => {
     let curr;
     if (product.prices) {
       curr = product.prices.find((price: any) => {
@@ -63,14 +63,11 @@ class Category extends React.Component<ICategory, { categoryName: string, produc
       })
   }
 
-  handleProductCallback(selectedProduct: any) {
-    this.props.productCallback(selectedProduct)
-  }
 
   handleProduct(product: any) {
     let currentLocation = window.location.pathname.split('/')[1];
-    window.history.pushState(null, "", `/${currentLocation}/${product.id}`)
-    this.handleProductCallback(product)
+    this.navigation(`/${currentLocation}/${product.id}`)
+    // this.props.history.push( `/${currentLocation}/${product.id}`)
   }
 
   getProductsHtml() {
@@ -108,4 +105,4 @@ const mapStateToProps = (state: State) => {
     category: state.products.category,
   }
 }
-export default connect(mapStateToProps)(Category);
+export default withRouter(connect(mapStateToProps)(Category));

@@ -52,7 +52,7 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
     this.getCategories()
     this.getCurrencies()
     if (this.props.cartProducts) {
-      this.countCartProducts()
+      this.setCartPorducts()
     }
   }
 
@@ -75,25 +75,27 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
   }
 
   componentDidUpdate(prevProps: any, prevState: { currencies: any, categories: any }) {
-    if (this.props.cartProducts !== prevProps.cartProducts) {
-      this.countCartProducts()
-    }
+    const currentLocation = this.getCurrentLocation()
+
+    this.countCartProducts(this.props.cartProducts,prevProps.cartProducts);
+
     if (this.state.currencies !== prevState.currencies) {
       this.handleCurrency({symbol: this.state.currencies[0].symbol, label: this.state.currencies[0].label})
     }
+
     if (this.state.categories !== prevState.categories) {
       let urlMatch = false;
-      if (window.location.pathname.split('/')[1] !== "") {
+      if (currentLocation !== "") {
         this.state.categories.forEach((category: any) => {
-          if (category.name === window.location.pathname.split('/')[1]) {
-            this.handleCategory(window.location.pathname.split('/')[1])
+          if (category.name === currentLocation) {
+            this.handleCategory(currentLocation)
             urlMatch = true;
             return;
           }
         })
       }
-      if (window.location.pathname.split('/')[1] === "" || !urlMatch) {
-        console.log("entered")
+
+      if (currentLocation === "" || !urlMatch) {
         window.history.pushState(null, "", this.state.categories[0].name)
         this.handleCategory(this.state.categories[0].name)
       }
@@ -101,7 +103,12 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
     }
   }
 
-  countCartProducts() {
+  countCartProducts(currentCart: any,prevCart : any) {
+    if(currentCart !==prevCart) {
+      this.setCartPorducts()
+    }
+  }
+  setCartPorducts() {
     let count = 0;
     this.props.cartProducts && Object.values(this.props.cartProducts).forEach((cartProduct: any) => count = count + cartProduct.count)
     this.setState({productsCount: count})
@@ -185,6 +192,9 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
         {this.state.cartDrawer && <div onClick={() => this.setState({cartDrawer: false})} className="shade"></div>}
       </>
     );
+  }
+  public getCurrentLocation(){
+    return window.location.pathname.split('/')[1]
   }
 };
 

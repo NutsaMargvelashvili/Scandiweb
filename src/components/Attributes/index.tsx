@@ -1,24 +1,27 @@
 import "./index.scss";
 import React from "react";
+import {State} from "../../state";
 
 interface IAttributes {
   product: any;
-  inCart?: boolean
+  inCart?: boolean;
+  selectedAttribute?: any;
+  setSelectedAttribute?: any;
 }
 
-class Attributes extends React.Component <IAttributes, { selectedAttribute: any}> {
+class Attributes extends React.Component <IAttributes> {
   constructor(props: any) {
     super(props);
 
     // Initializing the state
-    this.state = {selectedAttribute: {},};
   }
 
 
   handleAttribute(name: string, value: any) {
-    let attribute: any = this.state.selectedAttribute;
+    let attribute: any = this.props.selectedAttribute;
     attribute[name] = value;
-    this.setState({selectedAttribute: attribute})
+    // this.setState({selectedAttribute: attribute})
+    this.props.setSelectedAttribute(attribute)
   }
 
   getProductAttributes(selectedProduct: any) {
@@ -27,31 +30,30 @@ class Attributes extends React.Component <IAttributes, { selectedAttribute: any}
       attribute = selectedProduct.attributes.map((attribute: any) => {
         if (attribute.type === "text") {
           let attributeName = attribute.name;
-          return (<><p className={"caption"}>{attribute.name}:</p>
+          return (<div key={attribute.name}><p className={"caption"}>{attribute.name}:</p>
             <div className="text-attribute-wrapper">
               {attribute?.items?.map((attribute: any, index: any) =>
-                <div key={index + attribute.id} onClick={() => {
-                  this.handleAttribute(attributeName, attribute.value)
+                <div style={{cursor: !this.props.inCart? "pointer": "default"}} key={index + attribute.id} onClick={() => {
+                  !this.props.inCart && this.handleAttribute(attributeName, attribute.value)
                 }}
-                     className={`text-attribute ${this.state.selectedAttribute[attributeName] === attribute.value ? "active" : ""}`}>{attribute.value}</div>)}
+                     className={`text-attribute ${this.props.selectedAttribute[attributeName] === attribute.value ? "active" : ""}`}>{attribute.value}</div>)}
             </div>
-          </>)
-        } else if (attribute.type === "swatch") {
-          let attributeName = attribute.name;
-          return (<><p className={"caption"}>{attribute.name}:</p>
-            <div className="swatch-attribute-wrapper">
-              {attribute?.items?.map((attribute: any, index: any) => {
-                return <div key={index + attribute.id} onClick={() => {
-                  this.handleAttribute(attributeName, attribute.value)
-                }}
-                            className={`border ${this.state.selectedAttribute[attributeName] === attribute.value ? "active" : ""}`}>
-                  <div style={{background: attribute.value}} className={"swatch-attribute"}></div>
-                </div>
-              })}
-            </div>
-          </>)
+          </div>)
         }
-        return <></>
+        let attributeName = attribute.name;
+        return (<div key={attribute.name}><p  className={"caption"}>{attribute.name}:</p>
+          <div className="swatch-attribute-wrapper">
+            {attribute?.items?.map((attribute: any, index: any) => {
+              return <div style={{cursor: !this.props.inCart? "pointer": "default"}} key={index + attribute.id} onClick={() => {
+                !this.props.inCart &&  this.handleAttribute(attributeName, attribute.value)
+              }}
+                          className={`border ${this.props.selectedAttribute[attributeName] === attribute.value ? "active" : ""}`}>
+                <div style={{background: attribute.value}} className={"swatch-attribute"}></div>
+              </div>
+            })}
+          </div>
+        </div>)
+
       });
     return attribute
   }

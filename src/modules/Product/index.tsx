@@ -12,16 +12,16 @@ interface IProduct {
   addCartProduct: any;
 }
 
-class Product extends React.Component<IProduct, { selectedImage: number, selectedProduct: any}> {
+class Product extends React.Component<IProduct, { selectedImage: number, selectedProduct: any, selectedAttribute: any}> {
   public product = [];
 
   constructor(props: any) {
     super(props);
-    this.state = {selectedImage: 0, selectedProduct: []};
+    this.state = {selectedImage: 0, selectedProduct: [], selectedAttribute: {}};
 
   }
 
-  componentDidMount() {
+  componentDidMount(state = {}) {
     this.getProduct()
   }
 
@@ -52,6 +52,10 @@ class Product extends React.Component<IProduct, { selectedImage: number, selecte
            src={image}/>) : ""
   }
 
+  public handleAttribute = (payload: any) => {
+   this.setState({selectedAttribute: payload})
+  }
+
   render() {
     let product = this.getProductHtml()
     return (
@@ -66,11 +70,12 @@ class Product extends React.Component<IProduct, { selectedImage: number, selecte
         <div className="product-info">
           <p className={"brand"}>{this.state.selectedProduct.brand}</p>
           <p className={"name"}>{this.state.selectedProduct.name}</p>
-          <Attributes product={this.state.selectedProduct}/>
+          <Attributes setSelectedAttribute={this.handleAttribute} selectedAttribute={this.state.selectedAttribute} product={this.state.selectedProduct}/>
           <p className={"caption"}>price:</p>
           {this.handleCurrency()}
           <button disabled={!this.state.selectedProduct.inStock} onClick={() => {
-            this.props.addCartProduct(this.state.selectedProduct)
+            console.log(this.state.selectedAttribute, "selected attribute")
+            this.props.addCartProduct({...this.state.selectedProduct, selectedAttributes : this.state.selectedAttribute},)
           }} className={"add-cart-btn"}>Add to cart
           </button>
           <div className={"description"}

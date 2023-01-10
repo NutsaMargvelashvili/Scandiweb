@@ -25,17 +25,20 @@ const reducer = (state: any = initialState, action: Action) => {
   //     };
   switch (action.type) {
     case ActionTypes.ADD_CART_PRODUCT:
-
+      console.log(action.payload, "payloaddd")
       if (state.cartProducts[action.payload.id]) {
         let newCartProducts: any = {};
         newCartProducts = state.cartProducts;
         newCartProducts[action.payload.id].count = ++newCartProducts[action.payload.id].count
+        console.log(action.payload, "1 payloaddd")
 
         return {
           ...state,
           cartProducts: {...newCartProducts},
         }
       } else {
+        console.log(action.payload, "2 payloaddd")
+
         let newCartProduct: any = {};
         newCartProduct[action.payload.id] = {product: action.payload, count: 1}
 

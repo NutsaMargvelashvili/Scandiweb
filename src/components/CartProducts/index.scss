@@ -80,7 +80,10 @@
 
     }
 
-    &.big {
+
+  }
+  &.big{
+    max-height: fit-content;
       .cart-product-info {
         width: 292px;
 
@@ -141,7 +144,6 @@
         img {
           height: 288px;
           width: 200px;
-          object-fit: cover;
         }
 
         button {
@@ -149,8 +151,8 @@
           height: 45px;
         }
       }
-    }
-  }
+
+}
 }
 .separator {
   border: 1px solid #E5E5E5;
