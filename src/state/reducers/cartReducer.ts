@@ -31,7 +31,6 @@ const reducer = (state: any = initialState, action: Action) => {
       }
 
     case ActionTypes.REMOVE_CART_PRODUCT:
-      console.log("deleting...")
       if (state.cartProducts[action.payload.id].count > 1) {
         let newCartProducts: any = {};
         newCartProducts = state.cartProducts;

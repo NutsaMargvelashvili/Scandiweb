@@ -68,7 +68,6 @@ class CartProducts extends React.Component <ICartProducts, { selectedAttribute: 
 
   componentDidUpdate(prevProps: any, prevState: { categories: number; }) {
     if (this.props.cartProducts !== prevProps.cartProducts) {
-      console.log("cartProducts have changed")
       this.countCartProducts()
       this.countCartProductsPrice()
     }
