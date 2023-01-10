@@ -42,47 +42,54 @@
     display: flex;
     align-items: center;
     width: 204px;
+.currency-convertor-wrapper{
+  position: relative;
+  padding-left: 134px;
+  margin-right: 22px;
+  display: flex;
+  justify-content: center;
+  z-index: 10;
 
-    .currency-convertor {
-      display: flex;
-      padding-left: 134px;
-      align-items: center;
-      margin-right: 22px;
-      justify-content: center;
-      position: relative;
+  .currency-drawer {
+    position: absolute;
+    z-index: 4;
+    top: 30px;
+    width: 114px;
+    box-shadow: 0 4px 35px rgba(168, 172, 176, 0.19);
 
-      .currency-drawer {
-        position: absolute;
-        z-index: 4;
-        top: 30px;
-        width: 114px;
-        box-shadow: 0 4px 35px rgba(168, 172, 176, 0.19);
+    .currency-list-items {
+      list-style-type: none;
+      padding: 0;
+      cursor: pointer;
 
-        .currency-list-items {
-          list-style-type: none;
-          padding: 0;
-          cursor: pointer;
+      .list-item {
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
 
-          .list-item {
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-
-            &.active {
-              background: #EEEEEE;
-            }
-          }
+        &.active {
+          background: #EEEEEE;
         }
       }
-
-      .currency {
-        font-family: Raleway, sans-serif;
-        margin-right: 10px;
-        cursor: pointer;
-      }
     }
+  }
+  .currency-convertor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+
+    .currency {
+      font-family: Raleway, sans-serif;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+  }
+}
+
 
     .header-cart-wrapper {
       position: relative;
@@ -206,4 +213,10 @@
   position: absolute;
   z-index: 3;
   background: rgba(57, 55, 72, 0.22);
+}
+.shade-transparent{
+  width: 100%;
+  height: calc(100% - 78px);
+  position: absolute;
+  z-index: 3;
 }

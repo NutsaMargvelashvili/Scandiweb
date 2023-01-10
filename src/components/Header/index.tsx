@@ -40,8 +40,8 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
       productsCount: 0
     };
   }
-  public navigation  = (route: any) =>
-  {
+
+  public navigation = (route: any) => {
     // @ts-ignore
     this.props.navigate(route)
   }
@@ -83,7 +83,7 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
   componentDidUpdate(prevProps: any, prevState: { currencies: any, categories: any }) {
     const currentLocation = this.getCurrentLocation()
 
-    this.countCartProducts(this.props.cartProducts,prevProps.cartProducts);
+    this.countCartProducts(this.props.cartProducts, prevProps.cartProducts);
 
     if (this.state.currencies !== prevState.currencies) {
       this.handleCurrency({symbol: this.state.currencies[0].symbol, label: this.state.currencies[0].label})
@@ -110,11 +110,12 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
     }
   }
 
-  countCartProducts(currentCart: any,prevCart : any) {
-    if(currentCart !==prevCart) {
+  countCartProducts(currentCart: any, prevCart: any) {
+    if (currentCart !== prevCart) {
       this.setCartPorducts()
     }
   }
+
   setCartPorducts() {
     let count = 0;
     this.props.cartProducts && Object.values(this.props.cartProducts).forEach((cartProduct: any) => count = count + cartProduct.count)
@@ -135,6 +136,7 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
     return this.state.currencies ? this.state.currencies.map((currency: any, index: any) =>
       <li key={index + currency.label} onClick={() => {
         this.handleCurrency(currency)
+        this.setState({currencyDrawer:false})
       }}
           className={`list-item ${this.props.currency.label === currency.label ? "active" : ""}`}>{`${currency.symbol} ${currency.label}`}</li>) : ""
   }
@@ -159,10 +161,12 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
             </Link>
           </div>
           <div className="actions">
-            <div className="currency-convertor"
-                 onClick={() => this.setState({currencyDrawer: !this.state.currencyDrawer, cartDrawer: false})}>
-              <span className={"currency"}>{this.props.currency?.symbol}</span>
-              <img className={"arrow-icon"} alt={"arrow"} src={Arrow}/>
+            <div className="currency-convertor-wrapper">
+              <div className="currency-convertor"
+                   onClick={() => this.setState({currencyDrawer: !this.state.currencyDrawer, cartDrawer: false})}>
+                <span className={"currency"}>{this.props.currency?.symbol}</span>
+                <img className={"arrow-icon"} alt={"arrow"} src={Arrow}/>
+              </div>
               {this.state.currencyDrawer && (<div className="currency-drawer">
                 <ul className="currency-list-items">
                   {currencies}
@@ -196,11 +200,14 @@ class AppHeader extends React.Component <IHeader, { selectedSize: string, select
             </div>
           </div>
         </div>
+        {this.state.currencyDrawer &&
+            <div onClick={() => this.setState({currencyDrawer: false})} className="shade-transparent"></div>}
         {this.state.cartDrawer && <div onClick={() => this.setState({cartDrawer: false})} className="shade"></div>}
       </>
     );
   }
-  public getCurrentLocation(){
+
+  public getCurrentLocation() {
     return window.location.pathname.split('/')[1]
   }
 };
