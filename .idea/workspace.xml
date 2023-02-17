@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3000b4e9-76c7-4532-8630-a7ef8385102b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/modules/Category/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/Category/index.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -14,7 +13,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="37241" />
+    <option name="totalTimeSeconds" value="37496" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -89,7 +88,7 @@
       <workItem from="1673269244952" duration="35336000" />
       <workItem from="1673366192776" duration="11889000" />
       <workItem from="1673378782486" duration="7467000" />
-      <workItem from="1676619562400" duration="348000" />
+      <workItem from="1676619562400" duration="603000" />
     </task>
     <servers />
   </component>
