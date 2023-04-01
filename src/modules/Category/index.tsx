@@ -5,10 +5,13 @@ import { HistoryRouterProps } from "react-router-dom";
 import {withRouter} from '../../withRouter';
 import {State} from "../../state";
 import {connect} from "react-redux";
+import Cart from "../../assets/svg/CartEmptyWhite.svg";
+import {addCartProduct} from "../../state/action-creators";
 
 interface ICategory  extends HistoryRouterProps{
   currency: any;
   category: any;
+  addCartProduct: any;
 }
 
 class Category extends React.Component<ICategory, { categoryName: string, products: any, amount: number, location: any, currentPath: any }> {
@@ -71,13 +74,28 @@ class Category extends React.Component<ICategory, { categoryName: string, produc
 
   getProductsHtml() {
     return (this.state.products && this.state.products.length) ? (this.state.products.map((product: any, index: any) => (
+      <div className={`product ${!product.inStock ? "out-of-stock" : ""}`} key={index + product.name}>
+        {product.inStock &&
+            <button onClick={() => {
+              const attributes = {};
+              product.attributes.forEach((attribute: any) => {
+                // @ts-ignore
+                attributes[attribute.name] = attribute.items[0].value
+              })
+              this.props.addCartProduct({...product,selectedAttributes : attributes})
+            }} className="product-add-to-cart-btn">
+                <img className={"cart-icon"} alt={"cart"} src={Cart}/>
+            </button>
+        }
       <div onClick={() => {
         this.handleProduct(product)
-      }} className={`product ${!product.inStock ? "out-of-stock" : ""}`} key={index + product.name}>
+      }}  >
         <div className="product-image">
           {!product.inStock && <span>out of stock</span>}
           <img src={product.gallery[0]} alt={product.name}/>
+
         </div>
+      </div>
         <p className={"product-name"}>{product.name}</p>
         {this.handleCurrency(product)}
       </div>
@@ -104,4 +122,13 @@ const mapStateToProps = (state: State) => {
     category: state.products.category,
   }
 }
-export default withRouter(connect(mapStateToProps)(Category));
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    addCartProduct: (product: {}) => {
+      dispatch(addCartProduct(product))
+    }
+  }
+
+};
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Category));

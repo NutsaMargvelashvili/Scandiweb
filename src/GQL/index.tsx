@@ -65,6 +65,22 @@ export const getProductsByCategory = async (category: string) => {
           name
           id
           inStock
+            attributes {
+           name
+           type
+           items {
+              displayValue
+              value
+              id
+            }
+          }
+          prices {
+            currency {
+              symbol
+              label
+            }
+            amount
+          }
           gallery
           prices { 
           currency {

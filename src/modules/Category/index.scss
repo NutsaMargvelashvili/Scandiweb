@@ -28,19 +28,42 @@
       height: 411px;
       max-height: 444px;
       cursor: pointer;
+      position: relative;
 
+      .product-add-to-cart-btn{
+        background: #5ECE7B;
+        width: 52px;
+        height: 52px;
+        position: absolute;
+        border-radius: 50%;
+        bottom: 70px;
+        right: 36px;
+        justify-content: center;
+        align-items: center;
+        display: none;
+        border: none;
+        cursor: pointer;
+        z-index: 23;
+        img{
+          height: 24px;
+          width: 24px;
+        }
+      }
       .product-image {
         height: 330px;
         width: 354px;
         display: flex;
         justify-content: center;
         align-items: center;
+        position: relative;
 
         img {
           height: 100%;
           width: 100%;
           object-fit: cover;
         }
+
+
       }
 
       .product-name {
@@ -87,6 +110,11 @@
             letter-spacing: 0;
             color: #8D8F9A;
           }
+        }
+      }
+      &:hover{
+        .product-add-to-cart-btn{
+          display: flex;
         }
       }
     }

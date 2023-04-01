@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3000b4e9-76c7-4532-8630-a7ef8385102b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/assets/svg/CartEmptyWhite.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/CartProducts/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/CartProducts/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/state/reducers/cartReducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/state/reducers/cartReducer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GQL/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/GQL/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/Category/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/Category/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/Category/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/Category/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,7 +17,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="45744" />
+    <option name="totalTimeSeconds" value="49578" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -42,7 +43,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/newuser/Desktop/scandiweb",
+    "last_opened_file_path": "/home/newuser/Desktop/scandiweb/src/assets/svg",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -55,6 +56,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/assets/svg" />
       <recent name="$PROJECT_DIR$/src/components" />
     </key>
   </component>
@@ -92,7 +94,7 @@
       <workItem from="1673366192776" duration="11889000" />
       <workItem from="1673378782486" duration="7467000" />
       <workItem from="1676619562400" duration="3159000" />
-      <workItem from="1680359906509" duration="8135000" />
+      <workItem from="1680359906509" duration="12740000" />
     </task>
     <servers />
   </component>
