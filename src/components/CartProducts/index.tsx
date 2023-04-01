@@ -110,15 +110,19 @@ class CartProducts extends React.Component <ICartProducts, { selectedAttribute: 
   render() {
     return (
       <div className={`cart-products-wrapper ${this.props.big ? "big" : ""}`}>
-        {this.props.cartProducts ? Object.values(this.props.cartProducts).map((cartProduct: any, index: any) => {
+        {this.props.cartProducts ? Object.entries(this.props.cartProducts).map((cartProductEntrie: any, index: any) => {
+         const cartProduct = cartProductEntrie[1]
+          console.log(cartProductEntrie[0])
+          console.log(this.props.cartProducts)
+          console.log(cartProductEntrie[1])
           return (
-            <>
-              <div key={index + cartProduct.id} className={"cart-product-wrapper"}>
+            <div key={cartProductEntrie[0]} >
+              <div className={"cart-product-wrapper"}>
                 <div className="cart-product-info">
                   <p className={"brand"}>{cartProduct.product.brand}</p>
                   <p className={"name"}>{cartProduct.product.name}</p>
                   {this.handleCurrency(cartProduct.product)}
-                  <Attributes selectedAttribute={cartProduct.product.selectedAttributes} inCart product={cartProduct.product}/>
+                  <Attributes  selectedAttribute={cartProduct.product.selectedAttributes} inCart product={cartProduct.product}/>
                 </div>
                 <div className={"product-image-with-actions"}>
                   <div className={"cart-product-actions"}>
@@ -136,7 +140,7 @@ class CartProducts extends React.Component <ICartProducts, { selectedAttribute: 
                 </div>
               </div>
               {this.props.big && <hr className={"separator"}/>}
-            </>)
+            </div>)
         }) : ""}
       </div>
     );
